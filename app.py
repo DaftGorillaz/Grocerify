@@ -5,10 +5,10 @@ import json
 import re
 import urllib.parse  # Import for encoding spaces
 from flask_cors import CORS
-from grocerify.helper import Helper
-from grocerify.coles_helper import ColesHelper
-from grocerify.woolworths_helper import WoolworthsHelper
-from grocerify.product import Product
+from groceroo.helper import Helper
+from groceroo.coles_helper import ColesHelper
+from groceroo.woolworths_helper import WoolworthsHelper
+from groceroo.product import Product
 
 app = Flask(__name__)
 CORS(app)

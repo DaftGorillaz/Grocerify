@@ -1,6 +1,6 @@
 import requests
 import re
-from grocerify.product import Product
+from groceroo.product import Product
 
 class WoolworthsHelper:
     SUPERMARKET_NAME = "woolworths"
