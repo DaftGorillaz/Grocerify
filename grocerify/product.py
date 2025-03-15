@@ -20,4 +20,12 @@ class Product:
                 f"Image URL: {self.image_url}")
 
     def get_json(self):
-        return json.dumps(self.__dict__, indent=4)
+        return json.dumps({
+            'name': self.name,
+            'price': self.price,
+            'price_per_unit': self.price_per_unit,
+            'store': self.store,
+            'size': self.size,
+            'unit': self.unit,
+            'image_url': self.image_url
+        })
