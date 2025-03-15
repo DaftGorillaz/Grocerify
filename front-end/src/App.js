@@ -5,6 +5,7 @@ import HomeScreen from './components/HomeScreen';
 import ShoppingPage from './components/ShoppingPage';
 import ProductDetailsPage from './components/ProductDetailsPage';
 import GeneratedListPage from './components/GeneratedListPage';
+import AccountPage from './components/AccountPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/shopping" element={<ShoppingPage />} />
           <Route path="/product-details" element={<ProductDetailsPage />} />
           <Route path="/generated-list" element={<GeneratedListPage />} />
+          <Route path="/account" element={<AccountPage />} />
         </Routes>
       </div>
     </Router>

@@ -14,6 +14,8 @@ const BottomNavigation = ({ activeTab = 'home' }) => {
       navigate('/');
     } else if (tab === 'shopping') {
       navigate('/shopping');
+    } else if (tab === 'account') {
+      navigate('/account');
     }
     // Add other navigation paths as needed
   };

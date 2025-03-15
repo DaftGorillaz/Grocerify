@@ -1,0 +1,170 @@
+.account-page {
+  padding: 20px;
+  padding-bottom: 80px; /* Space for bottom navigation */
+  background-color: #FFFFFF;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Profile Section */
+.profile-section {
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 27px;
+  background-color: #F2F3F2; /* Placeholder color */
+  margin-right: 20px;
+  /* Use a fallback color instead of a specific image */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #53B175;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.name-edit {
+  display: flex;
+  align-items: center;
+}
+
+.name-edit h2 {
+  font-family: 'ADLaM Display', sans-serif;
+  font-size: 20px;
+  color: #181725;
+  margin: 0;
+  margin-right: 10px;
+}
+
+.edit-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.email {
+  font-family: 'ADLaM Display', sans-serif;
+  font-size: 16px;
+  color: #7C7C7C;
+  margin: 5px 0 0 0;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background-color: #E2E2E2;
+  margin: 15px 0;
+}
+
+/* Menu Items */
+.menu-items {
+  margin: 20px 0;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #f9f9f9;
+}
+
+.menu-item-left {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  width: 28px;
+  height: 28px;
+  margin-right: 15px;
+  object-fit: contain;
+}
+
+.menu-icon-container {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F2F3F2;
+}
+
+.menu-icon-circle svg {
+  width: 22px;
+  height: 22px;
+  fill: #181725;
+}
+
+.menu-item-left span {
+  font-family: 'ADLaM Display', sans-serif;
+  font-size: 18px;
+  color: #181725;
+}
+
+.arrow-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: #181725;
+}
+
+/* Logout Button */
+.logout-button {
+  width: 100%;
+  padding: 15px;
+  background-color: #F2F3F2;
+  border: none;
+  border-radius: 19px;
+  font-family: 'ADLaM Display', sans-serif;
+  font-size: 18px;
+  color: #53B175;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.logout-button:hover {
+  background-color: #E5E5E5;
+}
+
+.logout-button:active {
+  transform: scale(0.98);
+}
+
+/* Import ADLaM Display font */
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap'); 
