@@ -23,7 +23,7 @@ class WoolworthsHelper:
     @staticmethod
     def parse_product_size(product_size):
         """Parse the product size string."""
-        match = re.match(r"([\d.]+)\s*(g|kg|ml|L)", product_size, re.IGNORECASE)
+        match = re.match(r"([\d.]+)\s*(g|kg|ml|L|EA)", product_size, re.IGNORECASE)
         if match:
             quantity = float(match.group(1))
             unit = match.group(2).lower()

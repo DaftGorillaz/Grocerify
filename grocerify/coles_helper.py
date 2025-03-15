@@ -30,7 +30,7 @@ class ColesHelper:
         """Parse the product size string into a numerical value and unit."""
         if product_size == None:
             return None, None
-        match = re.match(r"([\d.]+)\s*(g|kg|ml|L)", product_size, re.IGNORECASE)
+        match = re.match(r"([\d.]+)\s*(g|kg|ml|L|EA)", product_size, re.IGNORECASE)
         if match:
             quantity = float(match.group(1))
             unit = match.group(2).lower()
