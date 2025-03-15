@@ -15,10 +15,10 @@
   align-items: center;
   padding: 20px;
   margin-bottom: 0;
-  border-bottom: 1px solid #E2E2E2;
+  /* border-bottom: 1px solid #E2E2E2; */
   padding-bottom: 15px;
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
 }
 
 .back-arrow {
