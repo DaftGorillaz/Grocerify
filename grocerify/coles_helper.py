@@ -1,6 +1,7 @@
 import requests
 import re
 from grocerify.product import Product
+from typing import Tuple
 
 class ColesHelper:
     BASE_URL = "https://coles-product-price-api.p.rapidapi.com"
@@ -25,8 +26,10 @@ class ColesHelper:
             return {}
 
     @staticmethod
-    def parse_product_size(product_size):
+    def parse_product_size(product_size) -> Tuple[int | None, str | None]:
         """Parse the product size string into a numerical value and unit."""
+        if product_size == None:
+            return None, None
         match = re.match(r"([\d.]+)\s*(g|kg|ml|L)", product_size, re.IGNORECASE)
         if match:
             quantity = float(match.group(1))
@@ -54,6 +57,12 @@ class ColesHelper:
         for product in raw_products:
             price = float(product.get("current_price", 0.0))
             size, unit = cls.parse_product_size(product.get("product_size", ""))
+
+            # Some product does not have price per unit. If that is the case,
+            # just skip the product.
+            if size is None:
+                continue
+            
             price_per_unit = round(price / size, 5) if size and size > 0 else None
             product_code = cls.extract_product_code(product.get("url", ""))
             image_url = cls.build_image_url(product_code)
