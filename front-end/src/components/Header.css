@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.greeting {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-dark);
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.location p {
+  font-size: 18px;
+  color: #4C4F4D;
+  text-align: center;
+}
+
+.location-icon {
+  width: 16px;
+  height: 16px;
+} 

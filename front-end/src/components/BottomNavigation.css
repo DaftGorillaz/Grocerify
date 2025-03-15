@@ -1,0 +1,50 @@
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  height: 80px;
+  background-color: #FFFFFF;
+  border-radius: 15px 15px 0 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  box-shadow: 0px -12px 37px 0px rgba(230, 235, 243, 0.5);
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.nav-item p {
+  font-size: 12px;
+  color: #7C7C7C;
+  transition: all 0.2s ease;
+  margin: 5px 0 0 0;
+}
+
+.nav-item.active p {
+  color: #53B175;
+  font-weight: 500;
+}
+
+.nav-item.active .nav-icon {
+  filter: invert(59%) sepia(11%) saturate(1646%) hue-rotate(93deg) brightness(95%) contrast(85%);
+  opacity: 1;
+} 

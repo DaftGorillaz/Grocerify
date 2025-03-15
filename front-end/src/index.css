@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'ADLaM Display', 'Anek Malayalam', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #FFFFFF;
+  color: #181725;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+:root {
+  --primary-color: #53B175;
+  --secondary-color: #F2F3F2;
+  --text-dark: #181725;
+  --text-gray: #7C7C7C;
+  --text-light: #FFFFFF;
+  --border-color: #E2E2E2;
+  --background-light: #FFFFFF;
+} 

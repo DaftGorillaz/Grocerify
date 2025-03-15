@@ -1,0 +1,45 @@
+.checkbox {
+  width: 24px;
+  height: 24px;
+  border: 1.9px solid #181725;
+  border-radius: 50%;
+  margin-right: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.checkbox.checked {
+  background-color: #53B175;
+  border-color: #53B175;
+}
+
+.checkmark {
+  width: 12px;
+  height: 12px;
+  position: relative;
+}
+
+.checkmark:before, .checkmark:after {
+  content: '';
+  position: absolute;
+  background-color: white;
+}
+
+.checkmark:before {
+  width: 2px;
+  height: 8px;
+  left: 2px;
+  top: 1px;
+  transform: rotate(-45deg);
+}
+
+.checkmark:after {
+  width: 2px;
+  height: 12px;
+  right: 2px;
+  top: -2px;
+  transform: rotate(45deg);
+} 

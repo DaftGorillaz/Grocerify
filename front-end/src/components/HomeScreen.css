@@ -1,0 +1,22 @@
+.home-screen {
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-bottom: 100px; /* Add padding to account for bottom navigation */
+}
+
+.home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background-color: #000000;
+  opacity: 0.1;
+  border-radius: 100px;
+} 

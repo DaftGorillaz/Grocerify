@@ -1,0 +1,8 @@
+.App {
+  max-width: 480px;
+  margin: 0 auto;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--background-light);
+} 
