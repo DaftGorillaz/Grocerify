@@ -13,25 +13,9 @@ import { useNavigate } from 'react-router-dom';
 
 const ShoppingPage = () => {
   const navigate = useNavigate();
-  const [items, setItems] = useState([
-    { id: 1, name: 'Coconut water' },
-    { id: 2, name: 'Milk' },
-    { id: 3, name: 'Gatorade' },
-    { id: 4, name: 'Pasta' }
-  ]);
+  const [items, setItems] = useState([]);
   
-  const [recipes, setRecipes] = useState([
-    {
-      id: 1,
-      name: 'Chicken Teriyaki',
-      image: recipeImage,
-      ingredients: [
-        { id: 5, name: 'Chicken Thigh' },
-        { id: 6, name: 'Teriyaki Sauce' },
-        { id: 7, name: 'Capsicum' }
-      ]
-    }
-  ]);
+  const [recipes, setRecipes] = useState([]);
   
   const [newItemName, setNewItemName] = useState('');
   const [showAddItemModal, setShowAddItemModal] = useState(false);
