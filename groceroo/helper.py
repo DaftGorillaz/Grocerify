@@ -1,5 +1,5 @@
-from grocerify import coles_helper, woolworths_helper
-from grocerify.product import Product
+from groceroo import coles_helper, woolworths_helper
+from groceroo.product import Product
 
 class Helper:
     def __init__(self):
