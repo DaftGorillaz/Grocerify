@@ -17,12 +17,9 @@ const GeneratedListPage = () => {
     listName: 'My Shopping List'
   };
 
-  // Initialize checked state for each item
+  // Initialize checked state using array indices instead of item IDs
   const [checkedItems, setCheckedItems] = useState(
-    shoppingList.reduce((acc, item) => {
-      acc[item.id] = false;
-      return acc;
-    }, {})
+    Array(shoppingList.length).fill(false)
   );
 
   // Store logo mapping
@@ -45,11 +42,13 @@ const GeneratedListPage = () => {
     alert(`Shopping list "${listName}" added to favorites!`);
   };
 
-  const handleCheckItem = (itemId) => {
-    setCheckedItems(prev => ({
-      ...prev,
-      [itemId]: !prev[itemId]
-    }));
+  // Update to use index instead of itemId
+  const handleCheckItem = (index) => {
+    setCheckedItems(prev => {
+      const newCheckedItems = [...prev];
+      newCheckedItems[index] = !newCheckedItems[index];
+      return newCheckedItems;
+    });
   };
 
   // Group items by store for multi-store lists
@@ -88,12 +87,12 @@ const GeneratedListPage = () => {
               {shoppingList.map((item, index) => (
                 <div 
                   key={index} 
-                  className={`list-item ${checkedItems[item.id] ? 'checked' : ''} ${item.note ? 'alternate-store' : ''}`}
-                  onClick={() => handleCheckItem(item.id)}
+                  className={`list-item ${checkedItems[index] ? 'checked' : ''} ${item.note ? 'alternate-store' : ''}`}
+                  onClick={() => handleCheckItem(index)}
                 >
                   <div className="item-info">
                     <div className="checkbox">
-                      {checkedItems[item.id] && <span className="checkmark">✓</span>}
+                      {checkedItems[index] && <span className="checkmark">X</span>}
                     </div>
                     <div className="item-details">
                       <p className="item-name">{item.name}</p>
@@ -124,12 +123,12 @@ const GeneratedListPage = () => {
               {shoppingList.map((item, index) => (
                 <div 
                   key={index} 
-                  className={`list-item ${checkedItems[item.id] ? 'checked' : ''}`}
-                  onClick={() => handleCheckItem(item.id)}
+                  className={`list-item ${checkedItems[index] ? 'checked' : ''}`}
+                  onClick={() => handleCheckItem(index)}
                 >
                   <div className="item-info">
                     <div className="checkbox">
-                      {checkedItems[item.id] && <span className="checkmark">✓</span>}
+                      {checkedItems[index] && <span className="checkmark">X</span>}
                     </div>
                     <div className="item-details">
                       <p className="item-name">{item.name}</p>
@@ -159,28 +158,34 @@ const GeneratedListPage = () => {
                 </div>
               </div>
               <div className="items-list">
-                {itemsByStore[store].map((item, itemIndex) => (
-                  <div 
-                    key={itemIndex} 
-                    className={`list-item ${checkedItems[item.id] ? 'checked' : ''} ${item.note ? 'alternate-store' : ''}`}
-                    onClick={() => handleCheckItem(item.id)}
-                  >
-                    <div className="item-info">
-                      <div className="checkbox">
-                        {checkedItems[item.id] && <span className="checkmark">✓</span>}
+                {itemsByStore[store].map((item, itemIndex) => {
+                  // Calculate the global index for this item
+                  const globalIndex = shoppingList.findIndex(i => 
+                    i.id === item.id && i.name === item.name && i.store === item.store
+                  );
+                  return (
+                    <div 
+                      key={itemIndex} 
+                      className={`list-item ${checkedItems[globalIndex] ? 'checked' : ''} ${item.note ? 'alternate-store' : ''}`}
+                      onClick={() => handleCheckItem(globalIndex)}
+                    >
+                      <div className="item-info">
+                        <div className="checkbox">
+                          {checkedItems[globalIndex] && <span className="checkmark">X</span>}
+                        </div>
+                        <div className="item-details">
+                          <p className="item-name">{item.name}</p>
+                          {item.note && (
+                            <p className="item-note">{item.note}</p>
+                          )}
+                        </div>
                       </div>
-                      <div className="item-details">
-                        <p className="item-name">{item.name}</p>
-                        {item.note && (
-                          <p className="item-note">{item.note}</p>
-                        )}
+                      <div className="item-price-container">
+                        <p className="item-price">${item.price?.toFixed(2) || '0.00'}</p>
                       </div>
                     </div>
-                    <div className="item-price-container">
-                      <p className="item-price">${item.price?.toFixed(2) || '0.00'}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))
