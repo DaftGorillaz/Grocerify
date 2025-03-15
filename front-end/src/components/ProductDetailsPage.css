@@ -84,14 +84,16 @@
 .store-logo {
   font-size: 14px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: transparent !important;
+  width: 100%;
 }
 
-.coles-logo {
-  color: #ED1C24;
-}
-
-.woolworths-logo {
-  color: #49A942;
+.store-logo-img {
+  width: 40px !important;
+  object-fit: contain;
 }
 
 .product-details {

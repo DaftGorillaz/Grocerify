@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import backArrow from '../assets/images/back-arrow.svg';
 import BottomNavigation from './BottomNavigation';
 import GenerateListModal from './GenerateListModal';
+import woolworthsLogo from '../assets/images/woolworths-logo.svg';
+import colesLogo from '../assets/images/coles-logo.svg';
 
 const ProductDetailsPage = () => {
   const navigate = useNavigate();
@@ -494,7 +496,13 @@ const ProductDetailsPage = () => {
                 <div key={mainProduct.id} className="main-product">
                   <div className="product-logo-container">
                     <div className={`store-logo ${mainProduct.logo}-logo`}>
-                      {mainProduct.store}
+                      {mainProduct.logo === 'woolworths' ? (
+                        <img src={woolworthsLogo} alt="Woolworths" className="store-logo-img" />
+                      ) : mainProduct.logo === 'coles' ? (
+                        <img src={colesLogo} alt="Coles" className="store-logo-img" />
+                      ) : (
+                        mainProduct.store
+                      )}
                     </div>
                   </div>
                   <div className="product-details">
@@ -506,7 +514,7 @@ const ProductDetailsPage = () => {
                         className={`add-button ${selectedProducts[product.productName]?.id === mainProduct.id ? 'selected' : ''}`}
                         onClick={() => handleAddProduct(product, mainProduct)}
                       >
-                        {selectedProducts[product.productName]?.id === mainProduct.id ? '✓' : '+'}
+                        {selectedProducts[product.productName]?.id === mainProduct.id ? 'X' : '+'}
                       </button>
                     </div>
                   </div>
@@ -522,7 +530,13 @@ const ProductDetailsPage = () => {
                   <div key={compProduct.id} className="comparison-product">
                     <div className="product-logo-container">
                       <div className={`store-logo ${compProduct.logo}-logo`}>
-                        {compProduct.store}
+                        {compProduct.logo === 'woolworths' ? (
+                          <img src={woolworthsLogo} alt="Woolworths" className="store-logo-img" />
+                        ) : compProduct.logo === 'coles' ? (
+                          <img src={colesLogo} alt="Coles" className="store-logo-img" />
+                        ) : (
+                          compProduct.store
+                        )}
                       </div>
                     </div>
                     <div className="product-details">
@@ -533,7 +547,7 @@ const ProductDetailsPage = () => {
                           className={`add-button ${selectedProducts[product.productName]?.id === compProduct.id ? 'selected' : ''}`}
                           onClick={() => handleAddProduct(product, compProduct)}
                         >
-                          {selectedProducts[product.productName]?.id === compProduct.id ? '✓' : '+'}
+                          {selectedProducts[product.productName]?.id === compProduct.id ? 'X' : '+'}
                         </button>
                       </div>
                     </div>
