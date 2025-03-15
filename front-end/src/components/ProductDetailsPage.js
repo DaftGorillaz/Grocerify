@@ -88,7 +88,8 @@ const ProductDetailsPage = () => {
                   const transformedProduct = {
                     id: Date.now() + Math.random(), // Generate a unique ID since API doesn't provide one
                     name: product.title || product.name || 'Unknown Product',
-                    size: product.package_size || '1 unit',
+                    size: product.size || 1,
+                    unit: product.unit || 'unit',
                     price: parseFloat(product.price) || 0.00,
                     pricePerUnit: product.price_per_unit || `${parseFloat(product.price) || 0.00}/unit`,
                     store: product.retailer || 'Unknown Store',
@@ -142,7 +143,8 @@ const ProductDetailsPage = () => {
                   const transformedProduct = {
                     id: Date.now() + Math.random(), // Generate a unique ID since API doesn't provide one
                     name: product.title || product.name || 'Unknown Product',
-                    size: product.package_size || '1 unit',
+                    size: product.size || 1,
+                    unit: product.unit || 'unit',
                     price: parseFloat(product.price) || 0.00,
                     pricePerUnit: product.price_per_unit || `${parseFloat(product.price) || 0.00}/unit`,
                     store: product.retailer || 'Unknown Store',
@@ -387,7 +389,7 @@ const ProductDetailsPage = () => {
                   </div>
                   <div className="product-details">
                     <h3 className="product-name">{mainProduct.name}</h3>
-                    <p className="product-size">{mainProduct.size}</p>
+                    <p className="product-size">{mainProduct.size} {mainProduct.unit}</p>
                     <div className="product-price-row">
                       <p className="product-price">${mainProduct.price.toFixed(2)} <span className="price-per-unit">({mainProduct.pricePerUnit})</span></p>
                       <button 
@@ -421,6 +423,7 @@ const ProductDetailsPage = () => {
                     </div>
                     <div className="product-details">
                       <h3 className="product-name">{compProduct.name}</h3>
+                      <p className="product-size">{compProduct.size} {compProduct.unit}</p>
                       <div className="product-price-row">
                         <p className="product-price">${compProduct.price.toFixed(2)} <span className="price-per-unit">({compProduct.pricePerUnit})</span></p>
                         <button 
