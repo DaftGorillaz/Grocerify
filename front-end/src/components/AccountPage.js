@@ -2,6 +2,7 @@ import React from 'react';
 import './AccountPage.css';
 import BottomNavigation from './BottomNavigation';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 // SVG Icons
 const NotificationIcon = () => (
@@ -30,10 +31,18 @@ const ChevronRightIcon = () => (
 
 const AccountPage = () => {
   const navigate = useNavigate();
-  const userName = "Steve";
+  const { user, updateUser } = useUser();
 
   const handleGoBack = () => {
     navigate(-1);
+  };
+
+  const handleEditProfile = () => {
+    // In a real app, this would open a profile edit form
+    const newName = prompt('Enter new name:', user.name);
+    if (newName) {
+      updateUser({ name: newName });
+    }
   };
 
   const handleMenuItemClick = (item) => {
@@ -57,20 +66,20 @@ const AccountPage = () => {
       {/* Profile Section */}
       <div className="profile-section">
         <div className="profile-image">
-          {userName.charAt(0)}
+          {user.name.charAt(0)}
         </div>
         <div className="profile-info">
           <div className="name-edit">
-            <h2>{userName}</h2>
+            <h2>{user.name}</h2>
             <img 
               src="/images/edit_icon.svg" 
               alt="Edit" 
               className="edit-icon" 
-              onClick={() => alert('Edit profile')}
+              onClick={handleEditProfile}
               style={{ cursor: 'pointer' }}
             />
           </div>
-          <p className="email">steve@mail.com</p>
+          <p className="email">{user.email}</p>
         </div>
       </div>
 
