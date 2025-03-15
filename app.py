@@ -15,16 +15,17 @@ CORS(app)
 
 @app.route('/search', methods=['GET'])
 def search():
-
     query = request.args.get('query')
+    if not query:
+        return jsonify({'error': 'No query provided'}), 400
 
-    helper = Helper()
-    products = helper.search(query)
-    json_products = []
-    i = 0
-    for product in products:
-        json_products.append(product.get_json())
-    return json_products
+    try:
+        helper = Helper()
+        products = helper.search(query)
+        json_products = [product.get_json() for product in products]
+        return jsonify(json_products)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

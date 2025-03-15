@@ -62,32 +62,126 @@ const ProductDetailsPage = () => {
               setError('Request timed out. Please try again.');
               setLoading(false);
             }
-          }, 20000); // 20 second timeout - increased from 10 seconds
+          }, 20000); // 20 second timeout
         }
 
-        // If we have multiple items, fetch data for all of them
+        // Make API calls to fetch product data
         if (allProductItems.length > 0) {
           const allProductData = [];
           for (const item of allProductItems) {
             if (!isMounted) break;
-            const response = await simulateApiCall(item.name);
-            allProductData.push(response);
-          }
-          if (isMounted) {
-            // Clear timeout since we successfully loaded
-            if (timeoutId) {
-              clearTimeout(timeoutId);
+            
+            try {
+              const response = await fetch(`http://127.0.0.1:5000/search?query=${encodeURIComponent(item.name)}`);
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              const data = await response.json();
+
+              // Transform the API response to match our expected format
+              const transformedData = {
+                productName: item.name,
+                products: Array.isArray(data) ? data.map(product => {
+                  // Extract data using the actual API response structure
+                  const transformedProduct = {
+                    id: Date.now() + Math.random(), // Generate a unique ID since API doesn't provide one
+                    name: product.title || product.name || 'Unknown Product',
+                    size: product.package_size || '1 unit',
+                    price: parseFloat(product.price) || 0.00,
+                    pricePerUnit: product.price_per_unit || `${parseFloat(product.price) || 0.00}/unit`,
+                    store: product.retailer || 'Unknown Store',
+                    logo: (product.retailer || 'unknown').toLowerCase(),
+                    isBestValue: false, // We'll calculate this later
+                    image: product.image || 'https://placehold.co/200x200?text=Product'
+                  };
+                  
+                  return transformedProduct;
+                }) : []
+              };
+
+              // Calculate best value
+              if (transformedData.products.length > 0) {
+                const lowestPrice = Math.min(...transformedData.products.map(p => p.price));
+                transformedData.products = transformedData.products.map(p => ({
+                  ...p,
+                  isBestValue: p.price === lowestPrice
+                }));
+              }
+              
+              allProductData.push(transformedData);
+            } catch (error) {
+              console.error(`Error fetching data for ${item.name}:`, error);
+              // Add error placeholder for this item
+              allProductData.push({
+                productName: item.name,
+                products: []
+              });
             }
+          }
+          
+          if (isMounted) {
             setProductData(allProductData);
             setLoading(false);
           }
+        } else if (searchQuery) {
+          // If no items but we have a search query, search for that
+          try {
+            const response = await fetch(`http://127.0.0.1:5000/search?query=${encodeURIComponent(searchQuery)}`);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            
+            if (isMounted) {
+              const transformedData = {
+                productName: searchQuery,
+                products: Array.isArray(data) ? data.map(product => {
+                  // Extract data using the actual API response structure
+                  const transformedProduct = {
+                    id: Date.now() + Math.random(), // Generate a unique ID since API doesn't provide one
+                    name: product.title || product.name || 'Unknown Product',
+                    size: product.package_size || '1 unit',
+                    price: parseFloat(product.price) || 0.00,
+                    pricePerUnit: product.price_per_unit || `${parseFloat(product.price) || 0.00}/unit`,
+                    store: product.retailer || 'Unknown Store',
+                    logo: (product.retailer || 'unknown').toLowerCase(),
+                    isBestValue: false, // We'll calculate this later
+                    image: product.image || 'https://placehold.co/200x200?text=Product'
+                  };
+                  
+                  return transformedProduct;
+                }) : []
+              };
+
+              // Calculate best value
+              if (transformedData.products.length > 0) {
+                const lowestPrice = Math.min(...transformedData.products.map(p => p.price));
+                transformedData.products = transformedData.products.map(p => ({
+                  ...p,
+                  isBestValue: p.price === lowestPrice
+                }));
+              }
+
+              setProductData([transformedData]);
+              setLoading(false);
+            }
+          } catch (error) {
+            if (isMounted) {
+              console.error('Error fetching search data:', error);
+              setError('Failed to fetch product data');
+              setLoading(false);
+            }
+          }
         } else {
-          // Otherwise just fetch data for the search query
-          const response = await simulateApiCall(searchQuery);
           if (isMounted) {
-            setProductData([response]);
+            setProductData([]);
             setLoading(false);
           }
+        }
+
+        // Clear timeout since we're done
+        if (timeoutId) {
+          clearTimeout(timeoutId);
         }
       } catch (err) {
         if (isMounted) {
@@ -108,220 +202,6 @@ const ProductDetailsPage = () => {
       }
     };
   }, [searchQuery, allItems, recipeItems]); // Only depend on the source data
-
-  // Simulate API call with mock data
-  const simulateApiCall = async (query) => {
-    try {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Return mock data based on the query
-      if (!query || typeof query !== 'string') {
-        // Handle invalid query
-        return {
-          productName: 'Unknown Product',
-          products: [
-            {
-              id: 999,
-              name: 'Unknown Product',
-              size: '1 unit',
-              price: 0.00,
-              pricePerUnit: '0.00/unit',
-              store: 'Woolworths',
-              logo: 'woolworths',
-              isBestValue: true,
-              image: 'https://placehold.co/200x200?text=Unknown'
-            }
-          ]
-        };
-      }
-      
-      const queryLower = query.toLowerCase();
-      
-      if (queryLower.includes('coconut')) {
-        return {
-          productName: 'Coconut Water',
-          products: [
-            {
-              id: 1,
-              name: 'Cocobella Coconut Water Straight Up',
-              size: '1L',
-              price: 2.75,
-              pricePerUnit: '2.75/L',
-              store: 'Woolworths',
-              logo: 'woolworths',
-              isBestValue: true,
-              image: 'https://cdn0.woolworths.media/content/wowproductimages/large/155073.jpg'
-            },
-            {
-              id: 2,
-              name: 'Coles Natural Coconut Water',
-              size: '1L',
-              price: 2.95,
-              pricePerUnit: '2.95/L',
-              store: 'Coles',
-              logo: 'coles',
-              isBestValue: false,
-              image: 'https://shop.coles.com.au/wcsstore/Coles-CAS/images/4/4/5/4456430.jpg'
-            },
-            {
-              id: 3,
-              name: 'H2Coco 100% Natural Coconut Water',
-              size: '1L',
-              price: 3.30,
-              pricePerUnit: '3.30/L',
-              store: 'Woolworths',
-              logo: 'woolworths',
-              isBestValue: false,
-              image: 'https://cdn0.woolworths.media/content/wowproductimages/large/752087.jpg'
-            }
-          ]
-        };
-      } else if (queryLower.includes('milk')) {
-        return {
-          productName: 'Milk',
-          products: [
-            {
-              id: 1,
-              name: 'Coles Full Cream Milk',
-              size: '3L',
-              price: 4.35,
-              pricePerUnit: '1.45/L',
-              store: 'Coles',
-              logo: 'coles',
-              isBestValue: true,
-              image: 'https://shop.coles.com.au/wcsstore/Coles-CAS/images/3/0/0/3000422.jpg'
-            },
-            {
-              id: 2,
-              name: 'Woolworths Whole Milk',
-              size: '2L',
-              price: 4.35,
-              pricePerUnit: '1.45/L',
-              store: 'Woolworths',
-              logo: 'woolworths',
-              isBestValue: false,
-              image: 'https://cdn0.woolworths.media/content/wowproductimages/large/048263.jpg'
-            }
-          ]
-        };
-      } else if (queryLower.includes('gatorade')) {
-        return {
-          productName: 'Gatorade',
-          products: [
-            {
-              id: 1,
-              name: 'Gatorade Sport Drink Blue Bolt',
-              size: '600ml',
-              price: 2.10,
-              pricePerUnit: '3.50/L',
-              store: 'Coles',
-              logo: 'coles',
-              isBestValue: true,
-              image: 'https://shop.coles.com.au/wcsstore/Coles-CAS/images/5/5/5/5553698.jpg'
-            },
-            {
-              id: 2,
-              name: 'Gatorade Sport Drink Lemon Lime',
-              size: '600ml',
-              price: 2.10,
-              pricePerUnit: '3.50/L',
-              store: 'Woolworths',
-              logo: 'woolworths',
-              isBestValue: false,
-              image: 'https://cdn0.woolworths.media/content/wowproductimages/large/729461.jpg'
-            }
-          ]
-        };
-      } else if (queryLower.includes('pasta')) {
-        return {
-          productName: 'Pasta',
-          products: [
-            {
-              id: 1,
-              name: 'San Remo Linguine Pasta No 1',
-              size: '500g',
-              price: 2.95,
-              pricePerUnit: '59¢/g',
-              store: 'Woolworths',
-              logo: 'woolworths',
-              isBestValue: true,
-              image: 'https://cdn0.woolworths.media/content/wowproductimages/large/018807.jpg'
-            },
-            {
-              id: 2,
-              name: 'San Remo Linguine Pasta No 2',
-              size: '500g',
-              price: 2.95,
-              pricePerUnit: '59¢/g',
-              store: 'Coles',
-              logo: 'coles',
-              isBestValue: false,
-              image: 'https://shop.coles.com.au/wcsstore/Coles-CAS/images/1/8/8/1889832.jpg'
-            },
-            {
-              id: 3,
-              name: 'Barilla Linguine Pasta',
-              size: '500g',
-              price: 3.50,
-              pricePerUnit: '70¢/g',
-              store: 'Coles',
-              logo: 'coles',
-              isBestValue: false,
-              image: 'https://cdn0.woolworths.media/content/wowproductimages/large/002773.jpg'
-            }
-          ]
-        };
-      } else {
-        // Default data for any other query
-        return {
-          productName: query,
-          products: [
-            {
-              id: 1,
-              name: `Best ${query} Option`,
-              size: '500g',
-              price: 2.95,
-              pricePerUnit: '5.90/kg',
-              store: 'Woolworths',
-              logo: 'woolworths',
-              isBestValue: true,
-              image: 'https://placehold.co/200x200?text=Product'
-            },
-            {
-              id: 2,
-              name: `Generic ${query}`,
-              size: '400g',
-              price: 2.50,
-              pricePerUnit: '6.25/kg',
-              store: 'Coles',
-              logo: 'coles',
-              isBestValue: false,
-              image: 'https://placehold.co/200x200?text=Product'
-            }
-          ]
-        };
-      }
-    } catch (err) {
-      console.error('Error fetching product data:', err);
-      return {
-        productName: 'Error',
-        products: [
-          {
-            id: 999,
-            name: 'Error',
-            size: '1 unit',
-            price: 0.00,
-            pricePerUnit: '0.00/unit',
-            store: 'Woolworths',
-            logo: 'woolworths',
-            isBestValue: true,
-            image: 'https://placehold.co/200x200?text=Error'
-          }
-        ]
-      };
-    }
-  };
 
   const handleGoBack = () => {
     navigate(-1);
