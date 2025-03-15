@@ -140,9 +140,11 @@ const ShoppingPage = () => {
         {recipes.map(recipe => (
           <div className="recipe-section" key={recipe.id}>
             <div className="recipe-header">
-              <h2 className="recipe-title">{recipe.name}</h2>
-              <div className="recipe-actions">
+              <div className="recipe-title-container">
                 <img src={recipe.image} alt="Recipe" className="recipe-image" />
+                <h2 className="recipe-title">{recipe.name}</h2>
+              </div>
+              <div className="recipe-actions">
                 <img 
                   src={crossIcon} 
                   alt="Remove Recipe" 

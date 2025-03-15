@@ -157,14 +157,15 @@
   font-size: 13px;
   color: #FFFFFF;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .recipe-button {
-  background-color: #53B175;
+  background-color: #53B175 !important;
 }
 
 .item-button {
-  background-color: rgba(170, 153, 170, 0.6);
+  background-color: rgba(170, 153, 170, 0.6) !important;
 }
 
 .button-icon {
