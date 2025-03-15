@@ -81,10 +81,16 @@
   margin-bottom: 10px;
 }
 
+.recipe-title-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .recipe-title {
   font-size: 18px;
   font-weight: 400;
-  color: #474747;
+  color: #2a2a2a;
 }
 
 .recipe-actions {
@@ -94,8 +100,8 @@
 }
 
 .recipe-image {
-  width: 60px;
-  height: 60px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -168,8 +174,6 @@
 .item-button {
   background-color: #53B175 !important;
   font-size: 13px !important;
-  padding-left: 10px;
-  padding-right: 10px;
   margin-right: 10px;
   margin-left: 10px;
 }

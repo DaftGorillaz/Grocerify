@@ -5,7 +5,6 @@ import addIcon from '../assets/images/add-icon.svg';
 import addItemIcon from '../assets/images/add-item-icon.svg';
 import recipeImage from '../assets/images/recipe-image.png';
 import scrollbarBg from '../assets/images/scrollbar-bg.svg';
-import scrollbarThumb from '../assets/images/scrollbar-thumb.svg';
 import crossIcon from '../assets/images/cross-icon.svg';
 import searchIcon from '../assets/images/search-icon.svg';
 import BottomNavigation from './BottomNavigation';
@@ -155,7 +154,6 @@ const ShoppingPage = () => {
 
       <div className="scrollbar">
         <img src={scrollbarBg} alt="" className="scrollbar-bg" />
-        <img src={scrollbarThumb} alt="" className="scrollbar-thumb" />
       </div>
 
       <div className="action-buttons">
