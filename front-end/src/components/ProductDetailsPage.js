@@ -95,7 +95,7 @@ const ProductDetailsPage = () => {
             }));
             
             try {
-              const response = await fetch(`${API_URL}/search?query=search?query=${encodeURIComponent(item.name)}`);
+              const response = await fetch(`${API_URL}/search?query=${encodeURIComponent(item.name)}`);
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
               }
