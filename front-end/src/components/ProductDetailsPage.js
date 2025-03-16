@@ -114,7 +114,7 @@ const ProductDetailsPage = () => {
                     size: product.size || 1,
                     unit: product.unit || 'unit',
                     price: parseFloat(product.price) || 0.00,
-                    pricePerUnit: product.price_per_unit || `${parseFloat(product.price) || 0.00}/unit`,
+                    pricePerUnit: (parseFloat(product.price) / (product.size || 1)).toFixed(2) + '/' + (product.unit || 'unit'),
                     store: product.retailer || 'Unknown Store',
                     logo: (product.retailer || 'unknown').toLowerCase(),
                     isBestValue: false, // We'll calculate this later
@@ -189,7 +189,7 @@ const ProductDetailsPage = () => {
                     size: product.size || 1,
                     unit: product.unit || 'unit',
                     price: parseFloat(product.price) || 0.00,
-                    pricePerUnit: product.price_per_unit || `${parseFloat(product.price) || 0.00}/unit`,
+                    pricePerUnit: (parseFloat(product.price) / (product.size || 1)).toFixed(2) + '/' + (product.unit || 'unit'),
                     store: product.retailer || 'Unknown Store',
                     logo: (product.retailer || 'unknown').toLowerCase(),
                     isBestValue: false, // We'll calculate this later
@@ -476,7 +476,7 @@ const ProductDetailsPage = () => {
                       <p className="product-size">{product.size} {product.unit}</p>
                       <div className="product-price-row">
                         <p className="product-price">${product.price.toFixed(2)} 
-                          <span className="price-per-unit">({product.pricePerUnit})</span>
+                          <span className="price-per-unit">(${product.pricePerUnit})</span>
                         </p>
                         <button 
                           className={`add-button ${selectedProducts[product.productName]?.id === product.id ? 'selected' : ''}`}
