@@ -26,7 +26,7 @@ class ColesHelper:
             return {}
 
     @staticmethod
-    def parse_product_size(product_size) -> Tuple[int | None, str | None]:
+    def parse_product_size(product_size):
         """Parse the product size string into a numerical value and unit."""
         if product_size == None:
             return None, None
@@ -56,6 +56,8 @@ class ColesHelper:
         products = []
         for product in raw_products:
             price = float(product.get("current_price", 0.0))
+            if price is None or price <= 0:
+                continue 
             size, unit = cls.parse_product_size(product.get("product_size", ""))
 
             # Some product does not have price per unit. If that is the case,
