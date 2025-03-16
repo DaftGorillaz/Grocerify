@@ -28,6 +28,7 @@ const GeneratedListPage = () => {
 
   // Calculate total price
   const [totalPrice, setTotalPrice] = useState(0);
+  const [storeSubtotals, setStoreSubtotals] = useState({});
 
   useEffect(() => {
     // Calculate the total price of all items
@@ -35,6 +36,19 @@ const GeneratedListPage = () => {
       return total + (item.price || 0);
     }, 0);
     setTotalPrice(sum);
+
+    // Calculate subtotals per store
+    const subtotals = {};
+    shoppingList.forEach(item => {
+      if (item.store) {
+        const storeName = item.store;
+        if (!subtotals[storeName]) {
+          subtotals[storeName] = 0;
+        }
+        subtotals[storeName] += (item.price || 0);
+      }
+    });
+    setStoreSubtotals(subtotals);
   }, [shoppingList]);
 
   // Store logo mapping
@@ -139,12 +153,17 @@ const GeneratedListPage = () => {
             <div className="store-header">
               <div className={`store-logo-container ${preferredStore.toLowerCase()}-container`}>
                 <img 
-                  src={storeLogo[preferredStore]} 
+                  src={storeLogo[preferredStore.toLowerCase()]} 
                   alt={preferredStore} 
                   className="store-logo-img" 
                 />
                 <span className="store-name">{capitalize(preferredStore)}</span>
               </div>
+              {storeSubtotals[preferredStore] && (
+                <div className="store-subtotal">
+                  <span className="subtotal-label">Subtotal:</span>&nbsp;&nbsp;${storeSubtotals[preferredStore].toFixed(2)}
+                </div>
+              )}
             </div>
             <div className="items-list">
               {shoppingList.map((item, index) => (
@@ -213,12 +232,17 @@ const GeneratedListPage = () => {
               <div className="store-header">
                 <div className={`store-logo-container ${store.toLowerCase()}-container`}>
                   <img 
-                    src={storeLogo[store]} 
+                    src={storeLogo[store.toLowerCase()]} 
                     alt={store} 
                     className="store-logo-img" 
                   />
                   <span className="store-name">{capitalize(store)}</span>
                 </div>
+                {storeSubtotals[store] && (
+                  <div className="store-subtotal">
+                    <span className="subtotal-label">Subtotal:</span>&nbsp;&nbsp;${storeSubtotals[store].toFixed(2)}
+                  </div>
+                )}
               </div>
               <div className="items-list">
                 {itemsByStore[store].map((item, itemIndex) => {

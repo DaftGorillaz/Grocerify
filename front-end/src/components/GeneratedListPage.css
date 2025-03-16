@@ -64,6 +64,7 @@
   margin-bottom: 15px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .store-logo-container {
@@ -323,4 +324,21 @@
   font-size: 17px;
   font-weight: 600;
   color: #53B175;
+}
+
+.store-subtotal {
+  font-size: 16px;
+  font-weight: 200;
+  color: #53B175;
+  background-color: #F8F9FA;
+  padding: 6px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtotal-label {
+  color: #181725;
 } 
