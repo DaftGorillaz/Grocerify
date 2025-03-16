@@ -205,7 +205,7 @@ const AccountPage = () => {
       {/* Help Popup */}
       {showHelpPopup && (
         <div className="help-popup">
-          <p>There is no help, only Groceroo</p>
+          <p>There is no help, only G̵̪̅r̶̞͆ȏ̷̩c̸̛̞ë̷̪r̸̞͒o̴̲̍ọ̶̊</p>
         </div>
       )}
 
@@ -222,7 +222,7 @@ const AccountPage = () => {
           <div className="terms-modal">
             <h2>Terms and Conditions</h2>
             <div className="terms-content">
-              <p>By accepting the terms and conditions, your soul is now the property of Groceroo.</p>
+              <p>By accepting our Terms and Conditions, your soul is now the property of Groceroo.</p>
             </div>
             <div className="terms-buttons">
               <button className="terms-button accept-button" onClick={handleAcceptTerms}>Accept</button>
