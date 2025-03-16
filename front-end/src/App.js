@@ -7,6 +7,7 @@ import ProductDetailsPage from './components/ProductDetailsPage';
 import GeneratedListPage from './components/GeneratedListPage';
 import AccountPage from './components/AccountPage';
 import HistoryPage from './components/HistoryPage';
+import FavoritePage from './components/FavoritePage';
 import { UserProvider } from './context/UserContext';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/generated-list" element={<GeneratedListPage />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/history" element={<HistoryPage />} />
+            <Route path="/favorite" element={<FavoritePage />} />
           </Routes>
         </div>
       </Router>

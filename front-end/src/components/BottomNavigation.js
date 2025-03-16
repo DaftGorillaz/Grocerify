@@ -18,7 +18,7 @@ const BottomNavigation = ({ activeTab = 'home' }) => {
     } else if (tab === 'history') {
       navigate('/history');
     } else if (tab === 'favourite') {
-      navigate('/favourite');
+      navigate('/favorite');
     } else if (tab === 'account') {
       navigate('/account');
     }

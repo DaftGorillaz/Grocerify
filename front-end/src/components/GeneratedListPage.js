@@ -51,8 +51,43 @@ const GeneratedListPage = () => {
   };
 
   const handleAddToFavorite = () => {
-    // In a real app, this would add the shopping list to favorites
-    alert(`Shopping list "${listName}" added to favorites!`);
+    // Get existing favorites or initialize empty array
+    const existingFavorites = JSON.parse(localStorage.getItem('shoppingFavorites') || '[]');
+    
+    // Create new favorite entry
+    const favoriteEntry = {
+      name: listName,
+      items: shoppingList,
+      maxStores,
+      timestamp: Date.now()
+    };
+
+    // Check if this list is already in favorites
+    const isDuplicate = existingFavorites.some(
+      favorite => 
+        favorite.name === favoriteEntry.name && 
+        JSON.stringify(favorite.items) === JSON.stringify(favoriteEntry.items)
+    );
+
+    if (isDuplicate) {
+      alert('This shopping list is already in your favorites!');
+      return;
+    }
+
+    // Add to favorites and save
+    const updatedFavorites = [favoriteEntry, ...existingFavorites];
+    localStorage.setItem('shoppingFavorites', JSON.stringify(updatedFavorites));
+
+    // Also add to history
+    const existingHistory = JSON.parse(localStorage.getItem('shoppingHistory') || '[]');
+    const historyEntry = {
+      ...favoriteEntry,
+      fromFavorites: true // Add a flag to indicate it was added from favorites
+    };
+    const updatedHistory = [historyEntry, ...existingHistory];
+    localStorage.setItem('shoppingHistory', JSON.stringify(updatedHistory));
+
+    alert(`Shopping list "${listName}" added to favorites and history!`);
   };
 
   // Update to use index instead of itemId
