@@ -39,7 +39,9 @@ class WoolworthsHelper:
             try:
                 product_info = item.get("Products", [{}])[0]
                 name = item.get("Name", "Unknown Product")
-                price = product_info.get("Price", 0.0)
+                price = product_info.get("Price")
+                if price is None:
+                    continue 
                 size, unit = self.parse_product_size(product_info.get("CupMeasure", "N/A"))
                 image = product_info.get("LargeImageFile", "")
                 price_per_unit = round(price / size, 5) if size else None
