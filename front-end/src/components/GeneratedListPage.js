@@ -33,7 +33,20 @@ const GeneratedListPage = () => {
   };
 
   const handleSave = () => {
-    // In a real app, this would save the shopping list to history
+    // Get existing history or initialize empty array
+    const existingHistory = JSON.parse(localStorage.getItem('shoppingHistory') || '[]');
+    
+    // Create new history entry
+    const historyEntry = {
+      name: listName,
+      items: shoppingList,
+      maxStores,
+      timestamp: Date.now()
+    };
+
+    // Add to history and save
+    const updatedHistory = [historyEntry, ...existingHistory];
+    localStorage.setItem('shoppingHistory', JSON.stringify(updatedHistory));
     alert(`Shopping list "${listName}" saved to history!`);
   };
 

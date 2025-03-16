@@ -4,6 +4,7 @@ import homeIcon from '../assets/images/home-icon.svg';
 import shoppingIcon from '../assets/images/shopping-icon.svg';
 import favoriteIcon from '../assets/images/favorite-icon.svg';
 import accountIcon from '../assets/images/account-icon.svg';
+import historyIcon from '../assets/images/history-icon.svg';
 import { useNavigate } from 'react-router-dom';
 
 const BottomNavigation = ({ activeTab = 'home' }) => {
@@ -14,6 +15,10 @@ const BottomNavigation = ({ activeTab = 'home' }) => {
       navigate('/');
     } else if (tab === 'shopping') {
       navigate('/shopping');
+    } else if (tab === 'history') {
+      navigate('/history');
+    } else if (tab === 'favourite') {
+      navigate('/favourite');
     } else if (tab === 'account') {
       navigate('/account');
     }
@@ -35,6 +40,13 @@ const BottomNavigation = ({ activeTab = 'home' }) => {
       >
         <img src={shoppingIcon} alt="Shopping" className="nav-icon" />
         <p>Shopping</p>
+      </div>
+      <div 
+        className={`nav-item ${activeTab === 'history' ? 'active' : ''}`}
+        onClick={() => handleNavigation('history')}
+      >
+        <img src={historyIcon} alt="History" className="nav-icon" />
+        <p>History</p>
       </div>
       <div 
         className={`nav-item ${activeTab === 'favourite' ? 'active' : ''}`}

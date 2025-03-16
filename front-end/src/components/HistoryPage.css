@@ -1,0 +1,173 @@
+.history-page {
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-bottom: 100px;
+  background-color: #FFFFFF;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.back-arrow {
+  width: 24px;
+  height: 24px;
+  margin-right: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.back-arrow:hover {
+  transform: translateX(-3px);
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 400;
+  color: #181B19;
+  margin: 0;
+}
+
+.history-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #7C7C7C;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  font-size: 20px;
+  color: #181725;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: #7C7C7C;
+}
+
+.history-lists {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.history-item {
+  background-color: #F2F3F2;
+  border-radius: 15px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.history-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.history-item-content {
+  flex: 1;
+  min-width: 0; /* Enable text truncation */
+}
+
+.history-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.history-item-header h3 {
+  font-size: 18px;
+  color: #181725;
+  margin: 0;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-date {
+  font-size: 14px;
+  color: #7C7C7C;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.history-item-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #7C7C7C;
+}
+
+.history-amount {
+  color: #53B175;
+  font-weight: 500;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #FF6961;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+  background-color: rgba(255, 105, 97, 0.1);
+}
+
+.delete-button:hover {
+  background-color: rgba(255, 105, 97, 0.2);
+  transform: scale(1.1);
+}
+
+.delete-button:active {
+  transform: scale(0.95);
+}
+
+.home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background-color: #000000;
+  opacity: 0.1;
+  border-radius: 100px;
+} 

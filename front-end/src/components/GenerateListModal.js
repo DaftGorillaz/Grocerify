@@ -76,17 +76,15 @@ const GenerateListModal = ({ isOpen, onClose, products }) => {
     } else {
       // Multi-store shopping list (best value from each store)
       // For each product category, find the best value product
-      const bestValueProducts = [];
       products.forEach(category => {
         const bestProduct = category.products.find(product => product.isBestValue);
         if (bestProduct) {
-          bestValueProducts.push({
+          shoppingList.push({
             ...bestProduct,
             category: category.productName
           });
         }
       });
-      shoppingList = bestValueProducts;
     }
     
     // Navigate to the generated list page with the shopping list data
