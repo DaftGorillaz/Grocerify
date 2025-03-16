@@ -16,6 +16,7 @@ const ProductDetailsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState({});
   const [customMode, setCustomMode] = useState(false);
+  const [progress, setProgress] = useState({ current: '', completed: [], total: 0, items: [] });
   
   // Get the search query, all items, and recipe items from location state
   const searchQuery = location.state?.searchQuery || 'coconut water';
@@ -56,6 +57,17 @@ const ProductDetailsPage = () => {
           });
         }
 
+        // Initialize progress tracking with all items
+        setProgress({ 
+          current: '', 
+          completed: [], 
+          total: allProductItems.length,
+          items: allProductItems.map(item => ({
+            name: item.name,
+            status: 'pending' // pending, loading, completed, error
+          }))
+        });
+
         // Start timeout only if we have items to fetch
         if (allProductItems.length > 0) {
           timeoutId = setTimeout(() => {
@@ -72,6 +84,15 @@ const ProductDetailsPage = () => {
           const allProductData = [];
           for (const item of allProductItems) {
             if (!isMounted) break;
+            
+            // Update current item being processed
+            setProgress(prev => ({
+              ...prev,
+              current: item.name,
+              items: prev.items.map(i => 
+                i.name === item.name ? { ...i, status: 'loading' } : i
+              )
+            }));
             
             try {
               const response = await fetch(`http://127.0.0.1:5000/search?query=${encodeURIComponent(item.name)}`);
@@ -112,13 +133,33 @@ const ProductDetailsPage = () => {
               }
               
               allProductData.push(transformedData);
+              
+              // Update completed items
+              setProgress(prev => ({
+                ...prev,
+                current: '',
+                completed: [...prev.completed, item.name],
+                items: prev.items.map(i => 
+                  i.name === item.name ? { ...i, status: 'completed' } : i
+                )
+              }));
             } catch (error) {
               console.error(`Error fetching data for ${item.name}:`, error);
-              // Add error placeholder for this item
               allProductData.push({
                 productName: item.name,
-                products: []
+                products: [],
+                error: error.message
               });
+              
+              // Mark as error
+              setProgress(prev => ({
+                ...prev,
+                current: '',
+                completed: [...prev.completed, item.name],
+                items: prev.items.map(i => 
+                  i.name === item.name ? { ...i, status: 'error', error: error.message } : i
+                )
+              }));
             }
           }
           
@@ -282,9 +323,25 @@ const ProductDetailsPage = () => {
           <h1>Price Comparison</h1>
         </div>
         <div className="loading-container">
-          <div className="loading-spinner"></div>
           <h3 className="loading-title">Finding Best Prices</h3>
-          <p className="loading-message">Comparing prices across stores...</p>
+          <p className="loading-message">
+            Processing items ({progress.completed.length}/{progress.total})
+          </p>
+          <div className="items-progress">
+            {progress.items.map((item, index) => (
+              <div key={index} className={`progress-item ${item.status}`}>
+                <span className="item-name">{item.name}</span>
+                {item.status === 'loading' && <div className="item-spinner" />}
+                {item.status === 'completed' && <span className="item-check" dangerouslySetInnerHTML={{ __html: '&#10004;' }} />}
+                {item.status === 'error' && (
+                  <>
+                    <span className="item-error">!</span>
+                    <span className="error-message">{item.error}</span>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
           <p className="loading-tip">This may take a moment as we search for the best deals.</p>
           <button 
             className="back-button loading-back-button" 
@@ -446,7 +503,11 @@ const ProductDetailsPage = () => {
       </div>
 
       {!customMode && (
-        <button className="generate-button" onClick={handleGenerateClick}>
+        <button 
+          className="generate-button" 
+          onClick={handleGenerateClick}
+          disabled={!productData || productData.length === 0}
+        >
           Generate
         </button>
       )}

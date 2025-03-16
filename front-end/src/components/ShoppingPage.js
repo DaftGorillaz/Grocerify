@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ShoppingPage.css';
 import backArrow from '../assets/images/back-arrow.svg';
 import addIcon from '../assets/images/add-icon.svg';
@@ -12,15 +12,29 @@ import { useNavigate } from 'react-router-dom';
 
 const ShoppingPage = () => {
   const navigate = useNavigate();
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(() => {
+    const savedItems = localStorage.getItem('shoppingItems');
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
   
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState(() => {
+    const savedRecipes = localStorage.getItem('shoppingRecipes');
+    return savedRecipes ? JSON.parse(savedRecipes) : [];
+  });
   
   const [newItemName, setNewItemName] = useState('');
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showAddRecipeModal, setShowAddRecipeModal] = useState(false);
   const [newRecipeName, setNewRecipeName] = useState('');
   const [newRecipeIngredients, setNewRecipeIngredients] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('shoppingItems', JSON.stringify(items));
+  }, [items]);
+
+  useEffect(() => {
+    localStorage.setItem('shoppingRecipes', JSON.stringify(recipes));
+  }, [recipes]);
 
   const handleBackClick = () => {
     navigate('/');
