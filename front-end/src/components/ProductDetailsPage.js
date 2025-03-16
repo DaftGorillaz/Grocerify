@@ -16,6 +16,7 @@ const ProductDetailsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState({});
   const [customMode, setCustomMode] = useState(false);
+  const [visibleProducts, setVisibleProducts] = useState(5);
   const [progress, setProgress] = useState({ current: '', completed: [], total: 0, items: [] });
   
   // Get the search query, all items, and recipe items from location state
@@ -321,6 +322,10 @@ const ProductDetailsPage = () => {
     setCustomMode(false);
   };
 
+  const handleLoadMore = () => {
+    setVisibleProducts(prev => prev + 3);
+  };
+
   if (loading) {
     return (
       <div className="product-details-page">
@@ -435,73 +440,51 @@ const ProductDetailsPage = () => {
           <div key={index} className="product-section">
             <h2 className="product-title">{product.productName}</h2>
             
-            <div className="comparison-container">
-              {/* Main product (left side) */}
-              {product.products.filter(p => p.isBestValue).map(mainProduct => (
-                <div key={mainProduct.id} className="main-product">
-                  <div className="product-logo-container">
-                    <div className={`store-logo ${mainProduct.logo}-logo`}>
-                      {mainProduct.logo === 'woolworths' ? (
-                        <img src={woolworthsLogo} alt="Woolworths" className="store-logo-img" />
-                      ) : mainProduct.logo === 'coles' ? (
-                        <img src={colesLogo} alt="Coles" className="store-logo-img" />
-                      ) : (
-                        mainProduct.store
-                      )}
-                    </div>
-                  </div>
-                  <div className="product-details">
-                    <h3 className="product-name">{mainProduct.name}</h3>
-                    <p className="product-size">{mainProduct.size} {mainProduct.unit}</p>
-                    <div className="product-price-row">
-                      <p className="product-price">${mainProduct.price.toFixed(2)} <span className="price-per-unit">({mainProduct.pricePerUnit})</span></p>
-                      <button 
-                        className={`add-button ${selectedProducts[product.productName]?.id === mainProduct.id ? 'selected' : ''}`}
-                        onClick={() => handleAddProduct(product, mainProduct)}
-                      >
-                        {selectedProducts[product.productName]?.id === mainProduct.id ? 'X' : '+'}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="product-image-main">
-                    <img src={mainProduct.image} alt={mainProduct.name} />
-                  </div>
-                </div>
-              ))}
-
-              {/* Comparison products (right side) */}
-              <div className="comparison-products">
-                {product.products.filter(p => !p.isBestValue && (p.store === 'Coles' || p.store === 'Woolworths')).map(compProduct => (
-                  <div key={compProduct.id} className="comparison-product">
+            <div className="products-scroll-container">
+              <div className="products-row">
+                {/* Sort products by price and show visible amount */}
+                {product.products
+                  .sort((a, b) => a.price - b.price)
+                  .slice(0, visibleProducts)
+                  .map(product => (
+                  <div key={product.id} className="product-card">
                     <div className="product-logo-container">
-                      <div className={`store-logo ${compProduct.logo}-logo`}>
-                        {compProduct.logo === 'woolworths' ? (
+                      <div className={`store-logo ${product.logo}-logo`}>
+                        {product.logo === 'woolworths' ? (
                           <img src={woolworthsLogo} alt="Woolworths" className="store-logo-img" />
-                        ) : compProduct.logo === 'coles' ? (
+                        ) : product.logo === 'coles' ? (
                           <img src={colesLogo} alt="Coles" className="store-logo-img" />
                         ) : (
-                          compProduct.store
+                          product.store
                         )}
                       </div>
                     </div>
                     <div className="product-details">
-                      <h3 className="product-name">{compProduct.name}</h3>
-                      <p className="product-size">{compProduct.size} {compProduct.unit}</p>
+                      <h3 className="product-name">{product.name}</h3>
+                      <p className="product-size">{product.size} {product.unit}</p>
                       <div className="product-price-row">
-                        <p className="product-price">${compProduct.price.toFixed(2)} <span className="price-per-unit">({compProduct.pricePerUnit})</span></p>
+                        <p className="product-price">${product.price.toFixed(2)} 
+                          <span className="price-per-unit">({product.pricePerUnit})</span>
+                        </p>
                         <button 
-                          className={`add-button ${selectedProducts[product.productName]?.id === compProduct.id ? 'selected' : ''}`}
-                          onClick={() => handleAddProduct(product, compProduct)}
+                          className={`add-button ${selectedProducts[product.productName]?.id === product.id ? 'selected' : ''}`}
+                          onClick={() => handleAddProduct(product, product)}
                         >
-                          {selectedProducts[product.productName]?.id === compProduct.id ? 'X' : '+'}
+                          {selectedProducts[product.productName]?.id === product.id ? 'X' : '+'}
                         </button>
                       </div>
                     </div>
+                    <div className="product-image-main">
+                      <img src={product.image} alt={product.name} />
+                    </div>
                   </div>
                 ))}
-                <div className="more-options">
-                  <p>More Options</p>
-                </div>
+                {/* Only show load more button if there are more products to show */}
+                {product.products.length > visibleProducts && (
+                  <button className="load-more-button" onClick={handleLoadMore}>
+                    Load More
+                  </button>
+                )}
               </div>
             </div>
           </div>

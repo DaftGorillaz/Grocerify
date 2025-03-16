@@ -101,15 +101,9 @@
 }
 
 .product-name {
-  font-size: 16px;
-  font-weight: 400;
-  color: #181725;
-  margin: 0 0 5px 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  font-size: 14px;
+  line-height: 1.3;
+  max-height: 36px;
 }
 
 .product-size {
@@ -125,15 +119,11 @@
 }
 
 .product-price {
-  font-size: 18px;
-  font-weight: 400;
-  color: #181725;
-  margin: 0;
+  font-size: 16px;
 }
 
 .price-per-unit {
-  color: #7C7C7C;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .add-button {
@@ -213,14 +203,16 @@
 }
 
 .product-image-main {
-  margin-top: 15px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100px;
 }
 
 .product-image-main img {
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 80px;
+  max-height: 80px;
   object-fit: contain;
 }
 
@@ -479,4 +471,63 @@
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 15px;
+}
+
+.products-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  padding: 0 20px;
+  margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.products-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.products-row {
+  display: flex;
+  gap: 15px;
+  padding-bottom: 10px;
+}
+
+.product-card {
+  min-width: 200px;
+  max-width: 200px;
+  background: white;
+  border: 1px solid #E2E2E2;
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.load-more-button {
+  min-width: 100px;
+  height: 100%;
+  background: #F2F3F2;
+  border: 1px dashed #E2E2E2;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7C7C7C;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 15px;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.load-more-button:hover {
+  background: #E8E9E8;
 } 
