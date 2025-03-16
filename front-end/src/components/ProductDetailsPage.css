@@ -504,11 +504,34 @@
   flex-direction: column;
   gap: 10px;
   transition: transform 0.2s ease;
+  position: relative;
+  overflow: visible;
 }
 
 .product-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.best-price-sticker {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 45px;
+  height: 45px;
+  z-index: 2;
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.coles-sticker {
+  background-image: url('../assets/images/best-price-sticker.svg');
+}
+
+.woolworths-sticker {
+  background-image: url('../assets/images/best-price-sticker.svg');
+  filter: hue-rotate(125deg); /* This will make the red sticker green for Woolworths */
 }
 
 .load-more-button {
@@ -530,4 +553,13 @@
 
 .load-more-button:hover {
   background: #E8E9E8;
+}
+
+.best-prices-section,
+.best-prices-title,
+.best-prices-row,
+.best-price-card,
+.all-products-section,
+.all-products-title {
+  display: none;
 } 

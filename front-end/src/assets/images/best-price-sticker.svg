@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Red background triangle -->
+  <path d="M0 0H45L0 45V0Z" fill="#ED1C24"/>
+  
+  <!-- White text -->
+  <text x="5" y="15" transform="rotate(-45 15 15)" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">
+    BEST
+  </text>
+  <text x="5" y="23" transform="rotate(-45 15 15)" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">
+    PRICE
+  </text>
+</svg> 

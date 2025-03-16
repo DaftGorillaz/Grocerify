@@ -6,6 +6,7 @@ import BottomNavigation from './BottomNavigation';
 import GenerateListModal from './GenerateListModal';
 import woolworthsLogo from '../assets/images/woolworths-logo.svg';
 import colesLogo from '../assets/images/coles-logo.svg';
+import bestPriceSticker from '../assets/images/best-price-sticker.svg';
 
 const ProductDetailsPage = () => {
   const navigate = useNavigate();
@@ -326,6 +327,35 @@ const ProductDetailsPage = () => {
     setVisibleProducts(prev => prev + 3);
   };
 
+  // Function to sort and organize products
+  const organizeProducts = (products) => {
+    // Get best price from each store, regardless of overall price ranking
+    const bestFromColes = products
+      .filter(p => p.store === 'Coles')
+      .sort((a, b) => a.price - b.price)[0];
+    
+    const bestFromWoolworths = products
+      .filter(p => p.store === 'Woolworths')
+      .sort((a, b) => a.price - b.price)[0];
+
+    // Get remaining products (excluding the best from each store)
+    const remainingProducts = products
+      .filter(p => 
+        p.id !== bestFromColes?.id && 
+        p.id !== bestFromWoolworths?.id
+      )
+      .sort((a, b) => a.price - b.price);
+
+    // Always show Coles first, then Woolworths, then the rest
+    const organizedProducts = [
+      bestFromColes,
+      bestFromWoolworths,
+      ...remainingProducts
+    ].filter(Boolean); // Remove any undefined values
+
+    return organizedProducts;
+  };
+
   if (loading) {
     return (
       <div className="product-details-page">
@@ -442,12 +472,16 @@ const ProductDetailsPage = () => {
             
             <div className="products-scroll-container">
               <div className="products-row">
-                {/* Sort products by price and show visible amount */}
-                {product.products
-                  .sort((a, b) => a.price - b.price)
-                  .slice(0, visibleProducts)
-                  .map(product => (
+                {organizeProducts(product.products).map((product, idx) => (
                   <div key={product.id} className="product-card">
+                    {/* Best Price Sticker - show for first two products (Coles and Woolworths) */}
+                    {idx <= 1 && (
+                      <img 
+                        src={bestPriceSticker} 
+                        alt="Best Price" 
+                        className={`best-price-sticker ${product.store.toLowerCase()}-sticker`}
+                      />
+                    )}
                     <div className="product-logo-container">
                       <div className={`store-logo ${product.logo}-logo`}>
                         {product.logo === 'woolworths' ? (
@@ -479,7 +513,6 @@ const ProductDetailsPage = () => {
                     </div>
                   </div>
                 ))}
-                {/* Only show load more button if there are more products to show */}
                 {product.products.length > visibleProducts && (
                   <button className="load-more-button" onClick={handleLoadMore}>
                     Load More
