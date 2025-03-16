@@ -339,4 +339,55 @@
   color: #7C7C7C;
   margin-bottom: 15px;
   text-align: center;
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.edit-icon:hover {
+  opacity: 1;
+}
+
+.edit-item-input {
+  font-family: 'Anek Malayalam', sans-serif;
+  font-size: 18px;
+  color: #474747;
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #53B175;
+  padding: 5px 0;
+  outline: none;
+}
+
+.edit-item-input:focus {
+  border-bottom-color: #3d8357;
+}
+
+.recipe-title-container .edit-item-input {
+  font-family: 'ADLaM Display', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #2a2a2a;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #53B175;
+  padding: 5px 0;
+  outline: none;
+  width: 200px;
+}
+
+.recipe-title-container .edit-item-input:focus {
+  border-bottom-color: #3d8357;
 } 

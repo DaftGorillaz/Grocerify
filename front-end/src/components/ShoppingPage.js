@@ -6,6 +6,7 @@ import addItemIcon from '../assets/images/add-item-icon.svg';
 import recipeImage from '../assets/images/recipe-image.png';
 import scrollbarBg from '../assets/images/scrollbar-bg.svg';
 import crossIcon from '../assets/images/cross-icon.svg';
+import editIcon from '../assets/images/edit-icon.svg';
 import searchIcon from '../assets/images/search-icon.svg';
 import BottomNavigation from './BottomNavigation';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +29,13 @@ const ShoppingPage = () => {
   const [newRecipeName, setNewRecipeName] = useState('');
   const [newRecipeIngredients, setNewRecipeIngredients] = useState('');
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [editedItemName, setEditedItemName] = useState('');
+  const [editingRecipeId, setEditingRecipeId] = useState(null);
+  const [editedRecipeName, setEditedRecipeName] = useState('');
+  const [editingIngredientId, setEditingIngredientId] = useState(null);
+  const [editingIngredientRecipeId, setEditingIngredientRecipeId] = useState(null);
+  const [editedIngredientName, setEditedIngredientName] = useState('');
 
   useEffect(() => {
     localStorage.setItem('shoppingItems', JSON.stringify(items));
@@ -43,6 +51,34 @@ const ShoppingPage = () => {
 
   const removeItem = (id) => {
     setItems(items.filter(item => item.id !== id));
+  };
+
+  const startEditing = (item) => {
+    setEditingItemId(item.id);
+    setEditedItemName(item.name);
+  };
+
+  const handleEditKeyDown = (e, itemId) => {
+    if (e.key === 'Enter') {
+      saveEdit(itemId);
+    } else if (e.key === 'Escape') {
+      cancelEdit();
+    }
+  };
+
+  const saveEdit = (itemId) => {
+    if (editedItemName.trim()) {
+      setItems(items.map(item => 
+        item.id === itemId ? { ...item, name: editedItemName.trim() } : item
+      ));
+      setEditingItemId(null);
+      setEditedItemName('');
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingItemId(null);
+    setEditedItemName('');
   };
 
   const removeRecipeItem = (recipeId, itemId) => {
@@ -132,6 +168,73 @@ const ShoppingPage = () => {
     setShowDeleteConfirmModal(false);
   };
 
+  const startEditingRecipe = (recipe) => {
+    setEditingRecipeId(recipe.id);
+    setEditedRecipeName(recipe.name);
+  };
+
+  const handleEditRecipeKeyDown = (e, recipeId) => {
+    if (e.key === 'Enter') {
+      saveRecipeEdit(recipeId);
+    } else if (e.key === 'Escape') {
+      cancelRecipeEdit();
+    }
+  };
+
+  const saveRecipeEdit = (recipeId) => {
+    if (editedRecipeName.trim()) {
+      setRecipes(recipes.map(recipe => 
+        recipe.id === recipeId ? { ...recipe, name: editedRecipeName.trim() } : recipe
+      ));
+      setEditingRecipeId(null);
+      setEditedRecipeName('');
+    }
+  };
+
+  const cancelRecipeEdit = () => {
+    setEditingRecipeId(null);
+    setEditedRecipeName('');
+  };
+
+  const startEditingIngredient = (recipeId, ingredient) => {
+    setEditingIngredientId(ingredient.id);
+    setEditingIngredientRecipeId(recipeId);
+    setEditedIngredientName(ingredient.name);
+  };
+
+  const handleEditIngredientKeyDown = (e, recipeId, ingredientId) => {
+    if (e.key === 'Enter') {
+      saveIngredientEdit(recipeId, ingredientId);
+    } else if (e.key === 'Escape') {
+      cancelIngredientEdit();
+    }
+  };
+
+  const saveIngredientEdit = (recipeId, ingredientId) => {
+    if (editedIngredientName.trim()) {
+      setRecipes(recipes.map(recipe => {
+        if (recipe.id === recipeId) {
+          return {
+            ...recipe,
+            ingredients: recipe.ingredients.map(ingredient =>
+              ingredient.id === ingredientId
+                ? { ...ingredient, name: editedIngredientName.trim() }
+                : ingredient
+            )
+          };
+        }
+        return recipe;
+      }));
+      cancelIngredientEdit();
+    }
+  };
+
+  const cancelIngredientEdit = () => {
+    setEditingIngredientId(null);
+    setEditingIngredientRecipeId(null);
+    setEditedIngredientName('');
+  };
+
   return (
     <div className="shopping-page">
       <div className="shopping-header">
@@ -154,13 +257,33 @@ const ShoppingPage = () => {
       <div className="shopping-list">
         {items.map(item => (
           <div className="list-item" key={item.id}>
-            <p className="item-name">{item.name}</p>
-            <img 
-              src={crossIcon} 
-              alt="Remove" 
-              className="remove-icon" 
-              onClick={() => removeItem(item.id)}
-            />
+            {editingItemId === item.id ? (
+              <input
+                type="text"
+                className="edit-item-input"
+                value={editedItemName}
+                onChange={(e) => setEditedItemName(e.target.value)}
+                onKeyDown={(e) => handleEditKeyDown(e, item.id)}
+                onBlur={() => saveEdit(item.id)}
+                autoFocus
+              />
+            ) : (
+              <p className="item-name">{item.name}</p>
+            )}
+            <div className="item-actions">
+              <img 
+                src={editIcon} 
+                alt="Edit" 
+                className="edit-icon" 
+                onClick={() => startEditing(item)}
+              />
+              <img 
+                src={crossIcon} 
+                alt="Remove" 
+                className="remove-icon" 
+                onClick={() => removeItem(item.id)}
+              />
+            </div>
           </div>
         ))}
 
@@ -169,9 +292,27 @@ const ShoppingPage = () => {
             <div className="recipe-header">
               <div className="recipe-title-container">
                 <img src={recipe.image} alt="Recipe" className="recipe-image" />
-                <h2 className="recipe-title">{recipe.name}</h2>
+                {editingRecipeId === recipe.id ? (
+                  <input
+                    type="text"
+                    className="edit-item-input"
+                    value={editedRecipeName}
+                    onChange={(e) => setEditedRecipeName(e.target.value)}
+                    onKeyDown={(e) => handleEditRecipeKeyDown(e, recipe.id)}
+                    onBlur={() => saveRecipeEdit(recipe.id)}
+                    autoFocus
+                  />
+                ) : (
+                  <h2 className="recipe-title">{recipe.name}</h2>
+                )}
               </div>
               <div className="recipe-actions">
+                <img 
+                  src={editIcon} 
+                  alt="Edit Recipe" 
+                  className="edit-icon" 
+                  onClick={() => startEditingRecipe(recipe)}
+                />
                 <img 
                   src={crossIcon} 
                   alt="Remove Recipe" 
@@ -183,13 +324,33 @@ const ShoppingPage = () => {
             
             {recipe.ingredients.map(item => (
               <div className="list-item" key={item.id}>
-                <p className="item-name">{item.name}</p>
-                <img 
-                  src={crossIcon} 
-                  alt="Remove" 
-                  className="remove-icon" 
-                  onClick={() => removeRecipeItem(recipe.id, item.id)}
-                />
+                {editingIngredientId === item.id && editingIngredientRecipeId === recipe.id ? (
+                  <input
+                    type="text"
+                    className="edit-item-input"
+                    value={editedIngredientName}
+                    onChange={(e) => setEditedIngredientName(e.target.value)}
+                    onKeyDown={(e) => handleEditIngredientKeyDown(e, recipe.id, item.id)}
+                    onBlur={() => saveIngredientEdit(recipe.id, item.id)}
+                    autoFocus
+                  />
+                ) : (
+                  <p className="item-name">{item.name}</p>
+                )}
+                <div className="item-actions">
+                  <img 
+                    src={editIcon} 
+                    alt="Edit" 
+                    className="edit-icon" 
+                    onClick={() => startEditingIngredient(recipe.id, item)}
+                  />
+                  <img 
+                    src={crossIcon} 
+                    alt="Remove" 
+                    className="remove-icon" 
+                    onClick={() => removeRecipeItem(recipe.id, item.id)}
+                  />
+                </div>
               </div>
             ))}
           </div>
