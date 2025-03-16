@@ -1,7 +1,7 @@
 import requests
 import re
 from groceroo.product import Product
-from typing import Tuple
+from typing import Tuple, List
 
 class ColesHelper:
     BASE_URL = "https://coles-product-price-api.p.rapidapi.com"
@@ -99,3 +99,17 @@ class ColesHelper:
                 all_results.extend(page_data["results"])
 
         return cls._create_products(all_results)
+    
+    @classmethod
+    def search_one(cls, query: str) -> Product | None:
+        page_data = cls.search(query, page=1, size=1)
+        products: List[Product]
+        if page_data and "results" in page_data:
+            products = cls._create_products(page_data["results"])
+        else:
+            return None
+        
+        if len(products) == 0:
+            return None
+        else:
+            return products[0]

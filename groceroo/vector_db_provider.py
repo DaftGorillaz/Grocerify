@@ -1,14 +1,41 @@
 from astrapy import DataAPIClient
-from typing import Literal, List
+from typing import Literal, List, Optional
+from grocerify.product import Product
+import os
 
 class ProductVectorDBProviderConfig():
   def __init__(self,
-               astra_db_application_token: str,
-               astra_db_api_endpoint: str,
-               astra_db_collection_name: str):
-    self.application_token = astra_db_application_token
-    self.api_endpoint = astra_db_api_endpoint
-    self.collection_name = astra_db_collection_name
+               astra_db_application_token: Optional[str] = None,
+               astra_db_api_endpoint: Optional[str] = None,
+               astra_db_collection_name: Optional[str] = None):
+    # Use provided values or fall back to environment variables
+    self.application_token = astra_db_application_token or os.environ.get("ASTRA_DB_APPLICATION_TOKEN")
+    self.api_endpoint = astra_db_api_endpoint or os.environ.get("ASTRA_DB_API_ENDPOINT")
+    self.collection_name = astra_db_collection_name or os.environ.get("ASTRA_DB_COLLECTION")
+
+  def validate(self) -> None:
+    """Validate that all required configuration values are present."""
+    missing = []
+    
+    if not self.application_token:
+        missing.append("ASTRA_DB_APPLICATION_TOKEN")
+    if not self.api_endpoint:
+        missing.append("ASTRA_DB_API_ENDPOINT")
+    if not self.collection_name:
+        missing.append("ASTRA_DB_COLLECTION")
+        
+    if missing:
+        raise ValueError(f"Missing required configuration: {', '.join(missing)}")
+    
+  @classmethod
+  def from_env(cls) -> 'ProductVectorDBProviderConfig':
+      """
+      Create a configuration instance from environment variables.
+      
+      Returns:
+          ProductVectorDBProviderConfig: Configured instance
+      """
+      return cls()
 
 class ProductVectorDBProvider():
   def __init__(self,
@@ -53,6 +80,62 @@ class ProductVectorDBProvider():
     except Exception as ex:
       print(ex)
       return False
+    
+  def insert_products(self,
+                      products: List[Product]):
+    """A function for inserting multiple products
+
+    Arguments:
+      products: A list of tuples consisting of product name and the store
+    """
+    try:
+      # For Astra DB, we need to handle each document individually for upserts
+      updated_count = 0
+      inserted_count = 0
+
+      for product in products:
+        product_id = product.name.replace(' ', '')
+        
+        # Check if the document exists
+        existing_doc = self.collection.find_one({'_id': product_id})
+        
+        if existing_doc:
+          # Update existing document
+          result = self.collection.update_one(
+              filter={'_id': product_id},
+              update={
+                '$set': {
+                  'content': product.name,
+                  '$vectorize': product.name,
+                  'metadata': product.__dict__
+                }
+              }
+          )
+          if result.update_info["n"] > 0:
+            updated_count += 1
+        else:
+          # Insert new document
+          self.collection.insert_one({
+            '_id': product_id,
+            'content': product.name,
+            '$vectorize': product.name,
+            'metadata': product.__dict__
+          })
+          inserted_count += 1
+
+      # self.collection.insert_many(
+      #     documents=[
+      #         {
+      #           '_id': product.name.replace(' ', ''),
+      #           'content': f"product.name",
+      #           '$vectorize': product.name,
+      #           'metadata': product.__dict__
+      #         } for product in products
+      #     ]
+      # )
+
+    except Exception as ex:
+      print(ex)
 
   def get_products_by_similarity(self,
                                  product_name: str,

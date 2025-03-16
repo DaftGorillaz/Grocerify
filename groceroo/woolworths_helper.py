@@ -72,3 +72,12 @@ class WoolworthsHelper:
             products, _ = self.search(product_string, page_number=page, page_size=36)
             all_products.extend(products)
         return all_products
+    
+    def search_one(self, product_string) -> Product | None:
+        products = self.search(product_string=product_string, page_number=1, page_size=1)
+
+        if len(products[0]) == 0 or products[1] == 0:
+            return None
+        
+        else:
+            return products[0][0]
