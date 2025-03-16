@@ -268,29 +268,23 @@ const ShoppingPage = () => {
                 autoFocus
               />
             ) : (
-              <p className="item-name">{item.name}</p>
+              <div className="item-content" onClick={() => startEditing(item)}>
+                <p className="item-name">{item.name}</p>
+              </div>
             )}
-            <div className="item-actions">
-              <img 
-                src={editIcon} 
-                alt="Edit" 
-                className="edit-icon" 
-                onClick={() => startEditing(item)}
-              />
-              <img 
-                src={crossIcon} 
-                alt="Remove" 
-                className="remove-icon" 
-                onClick={() => removeItem(item.id)}
-              />
-            </div>
+            <img 
+              src={crossIcon} 
+              alt="Remove" 
+              className="remove-icon" 
+              onClick={() => removeItem(item.id)}
+            />
           </div>
         ))}
 
         {recipes.map(recipe => (
           <div className="recipe-section" key={recipe.id}>
             <div className="recipe-header">
-              <div className="recipe-title-container">
+              <div className="recipe-title-container" onClick={() => startEditingRecipe(recipe)}>
                 <img src={recipe.image} alt="Recipe" className="recipe-image" />
                 {editingRecipeId === recipe.id ? (
                   <input
@@ -306,20 +300,12 @@ const ShoppingPage = () => {
                   <h2 className="recipe-title">{recipe.name}</h2>
                 )}
               </div>
-              <div className="recipe-actions">
-                <img 
-                  src={editIcon} 
-                  alt="Edit Recipe" 
-                  className="edit-icon" 
-                  onClick={() => startEditingRecipe(recipe)}
-                />
-                <img 
-                  src={crossIcon} 
-                  alt="Remove Recipe" 
-                  className="remove-icon recipe-remove-icon" 
-                  onClick={() => removeRecipe(recipe.id)}
-                />
-              </div>
+              <img 
+                src={crossIcon} 
+                alt="Remove Recipe" 
+                className="remove-icon recipe-remove-icon" 
+                onClick={() => removeRecipe(recipe.id)}
+              />
             </div>
             
             {recipe.ingredients.map(item => (
@@ -335,22 +321,16 @@ const ShoppingPage = () => {
                     autoFocus
                   />
                 ) : (
-                  <p className="item-name">{item.name}</p>
+                  <div className="item-content" onClick={() => startEditingIngredient(recipe.id, item)}>
+                    <p className="item-name">{item.name}</p>
+                  </div>
                 )}
-                <div className="item-actions">
-                  <img 
-                    src={editIcon} 
-                    alt="Edit" 
-                    className="edit-icon" 
-                    onClick={() => startEditingIngredient(recipe.id, item)}
-                  />
-                  <img 
-                    src={crossIcon} 
-                    alt="Remove" 
-                    className="remove-icon" 
-                    onClick={() => removeRecipeItem(recipe.id, item.id)}
-                  />
-                </div>
+                <img 
+                  src={crossIcon} 
+                  alt="Remove" 
+                  className="remove-icon" 
+                  onClick={() => removeRecipeItem(recipe.id, item.id)}
+                />
               </div>
             ))}
           </div>

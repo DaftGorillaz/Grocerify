@@ -123,6 +123,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.recipe-title-container:hover {
+  background-color: rgba(83, 177, 117, 0.1);
 }
 
 .recipe-title {
@@ -390,4 +398,16 @@
 
 .recipe-title-container .edit-item-input:focus {
   border-bottom-color: #3d8357;
+}
+
+.item-content {
+  flex: 1;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.item-content:hover {
+  background-color: rgba(83, 177, 117, 0.1);
 } 
