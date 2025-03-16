@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AccountPage.css';
 import BottomNavigation from './BottomNavigation';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,12 @@ import { useUser } from '../context/UserContext';
 const NotificationIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+  </svg>
+);
+
+const TermsIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
   </svg>
 );
 
@@ -32,6 +38,10 @@ const ChevronRightIcon = () => (
 const AccountPage = () => {
   const navigate = useNavigate();
   const { user, updateUser } = useUser();
+  const [showNotificationPopup, setShowNotificationPopup] = useState(false);
+  const [showHelpPopup, setShowHelpPopup] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showAcceptedPopup, setShowAcceptedPopup] = useState(false);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -48,8 +58,27 @@ const AccountPage = () => {
   const handleMenuItemClick = (item) => {
     // In a real app, this would navigate to the respective pages
     console.log(`Navigating to ${item}`);
-    // For demonstration purposes, we'll just show an alert
-    alert(`You clicked on ${item}`);
+    
+    if (item === 'Notifications') {
+      setShowNotificationPopup(true);
+      
+      // Auto-hide the popup after 3 seconds
+      setTimeout(() => {
+        setShowNotificationPopup(false);
+      }, 3000);
+    } else if (item === 'Help') {
+      setShowHelpPopup(true);
+      
+      // Auto-hide the popup after 3 seconds
+      setTimeout(() => {
+        setShowHelpPopup(false);
+      }, 3000);
+    } else if (item === 'Terms and Conditions') {
+      setShowTermsModal(true);
+    } else {
+      // For demonstration purposes, we'll just show an alert for other menu items
+      alert(`You clicked on ${item}`);
+    }
   };
 
   const handleLogout = () => {
@@ -59,6 +88,20 @@ const AccountPage = () => {
     alert('You have been logged out');
     // Navigate to home page after logout
     navigate('/');
+  };
+
+  const handleCloseTerms = () => {
+    setShowTermsModal(false);
+  };
+
+  const handleAcceptTerms = () => {
+    setShowTermsModal(false);
+    setShowAcceptedPopup(true);
+    
+    // Auto-hide the popup after 3 seconds
+    setTimeout(() => {
+      setShowAcceptedPopup(false);
+    }, 3000);
   };
 
   return (
@@ -103,6 +146,22 @@ const AccountPage = () => {
 
         <div className="divider"></div>
 
+        <div className="menu-item" onClick={() => handleMenuItemClick('Terms and Conditions')}>
+          <div className="menu-item-left">
+            <div className="menu-icon-container">
+              <div className="menu-icon-circle">
+                <TermsIcon />
+              </div>
+            </div>
+            <span>Terms and Conditions</span>
+          </div>
+          <div className="arrow-icon">
+            <ChevronRightIcon />
+          </div>
+        </div>
+
+        <div className="divider"></div>
+
         <div className="menu-item" onClick={() => handleMenuItemClick('Help')}>
           <div className="menu-item-left">
             <div className="menu-icon-container">
@@ -135,6 +194,43 @@ const AccountPage = () => {
 
         <div className="divider"></div>
       </div>
+
+      {/* Notification Popup */}
+      {showNotificationPopup && (
+        <div className="notification-popup">
+          <p>You have enabled any and all notifications from Groceroo</p>
+        </div>
+      )}
+
+      {/* Help Popup */}
+      {showHelpPopup && (
+        <div className="help-popup">
+          <p>There is no help, only Groceroo</p>
+        </div>
+      )}
+
+      {/* Terms Accepted Popup */}
+      {showAcceptedPopup && (
+        <div className="accepted-popup">
+          <p>Terms accepted. Your soul now belongs to Groceroo</p>
+        </div>
+      )}
+
+      {/* Terms and Conditions Modal */}
+      {showTermsModal && (
+        <div className="modal-overlay">
+          <div className="terms-modal">
+            <h2>Terms and Conditions</h2>
+            <div className="terms-content">
+              <p>By accepting the terms and conditions, your soul is now the property of Groceroo.</p>
+            </div>
+            <div className="terms-buttons">
+              <button className="terms-button accept-button" onClick={handleAcceptTerms}>Accept</button>
+              <button className="terms-button accept-button" onClick={handleAcceptTerms}>Accept</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Logout Button */}
       <button className="logout-button" onClick={handleLogout}>Log Out</button>
