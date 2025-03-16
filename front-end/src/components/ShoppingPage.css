@@ -7,6 +7,22 @@
   flex-direction: column;
   overflow-y: auto;
   background-color: #FFFFFF;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* For Webkit browsers like Chrome/Safari */
+.shopping-page::-webkit-scrollbar {
+  width: 5px;
+}
+
+.shopping-page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shopping-page::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 .shopping-header {
@@ -115,29 +131,17 @@
   background-color: #F2F3F2;
 }
 
+/* Remove the static scrollbar */
 .scrollbar {
-  position: absolute;
-  right: 5px;
-  top: 100px;
-  bottom: 150px;
-  width: 5px;
-  display: flex;
-  justify-content: center;
+  display: none;
 }
 
 .scrollbar-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0.6;
+  display: none;
 }
 
 .scrollbar-thumb {
-  position: absolute;
-  width: 100%;
-  height: 30%;
-  top: 0;
-  opacity: 0.6;
+  display: none;
 }
 
 .action-buttons {

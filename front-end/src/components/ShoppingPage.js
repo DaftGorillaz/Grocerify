@@ -166,10 +166,6 @@ const ShoppingPage = () => {
         ))}
       </div>
 
-      <div className="scrollbar">
-        <img src={scrollbarBg} alt="" className="scrollbar-bg" />
-      </div>
-
       <div className="action-buttons">
         <div className="button-group">
           <button 
