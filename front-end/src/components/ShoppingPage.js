@@ -63,13 +63,25 @@ const ShoppingPage = () => {
 
   const handleAddItem = () => {
     if (newItemName.trim()) {
-      const newItem = {
-        id: Date.now(),
-        name: newItemName.trim()
-      };
-      setItems([...items, newItem]);
-      setNewItemName('');
-      setShowAddItemModal(false);
+      const itemNames = newItemName.split(',');
+      const newItems = itemNames
+        .map(itemName => ({
+          id: Date.now() + Math.random(),
+          name: itemName.trim()
+        }))
+        .filter(item => item.name !== '')
+        .filter(newItem => !items.some(existingItem => 
+          existingItem.name.toLowerCase() === newItem.name.toLowerCase()
+        ));
+      
+      if (newItems.length > 0) {
+        setItems([...items, ...newItems]);
+        setNewItemName('');
+        setShowAddItemModal(false);
+      } else {
+        // If all items were duplicates, just clear the input
+        setNewItemName('');
+      }
     }
   };
 
