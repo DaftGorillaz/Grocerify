@@ -95,7 +95,7 @@ const ProductDetailsPage = () => {
             }));
             
             try {
-              const response = await fetch(`http://127.0.0.1:5000/search?query=${encodeURIComponent(item.name)}`);
+              const response = await fetch(`${API_URL}/search?query=search?query=${encodeURIComponent(item.name)}`);
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
               }
@@ -170,7 +170,7 @@ const ProductDetailsPage = () => {
         } else if (searchQuery) {
           // If no items but we have a search query, search for that
           try {
-            const response = await fetch(`http://127.0.0.1:5000/search?query=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(`${API_URL}/search?query=${encodeURIComponent(searchQuery)}`);
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
