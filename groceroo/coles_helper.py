@@ -34,8 +34,12 @@ class ColesHelper:
         if match:
             quantity = float(match.group(1))
             unit = match.group(2).lower()
-            if unit in ["kg", "l"]:
+            if unit =="kg":
                 quantity *= 1000
+                unit = "g"
+            if unit == "l":
+                quantity *= 1000
+                unit = "ml"
             return int(round(quantity)), unit
         return None, None
 
