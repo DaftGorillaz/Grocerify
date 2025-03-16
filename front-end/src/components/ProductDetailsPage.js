@@ -329,31 +329,8 @@ const ProductDetailsPage = () => {
 
   // Function to sort and organize products
   const organizeProducts = (products) => {
-    // Get best price from each store, regardless of overall price ranking
-    const bestFromColes = products
-      .filter(p => p.store === 'Coles')
-      .sort((a, b) => a.price - b.price)[0];
-    
-    const bestFromWoolworths = products
-      .filter(p => p.store === 'Woolworths')
-      .sort((a, b) => a.price - b.price)[0];
-
-    // Get remaining products (excluding the best from each store)
-    const remainingProducts = products
-      .filter(p => 
-        p.id !== bestFromColes?.id && 
-        p.id !== bestFromWoolworths?.id
-      )
-      .sort((a, b) => a.price - b.price);
-
-    // Always show Coles first, then Woolworths, then the rest
-    const organizedProducts = [
-      bestFromColes,
-      bestFromWoolworths,
-      ...remainingProducts
-    ].filter(Boolean); // Remove any undefined values
-
-    return organizedProducts;
+    // Sort all products by price
+    return products.sort((a, b) => a.price - b.price);
   };
 
   if (loading) {
@@ -472,10 +449,11 @@ const ProductDetailsPage = () => {
             
             <div className="products-scroll-container">
               <div className="products-row">
-                {organizeProducts(product.products).map((product, idx) => (
+                {organizeProducts(product.products)
+                  .slice(0, visibleProducts)
+                  .map((product, idx) => (
                   <div key={product.id} className="product-card">
-                    {/* Best Price Sticker - show for first two products (Coles and Woolworths) */}
-                    {idx <= 1 && (
+                    {product.isBestValue && (
                       <img 
                         src={bestPriceSticker} 
                         alt="Best Price" 
@@ -494,7 +472,7 @@ const ProductDetailsPage = () => {
                       </div>
                     </div>
                     <div className="product-details">
-                      <h3 className="product-name">{product.name}</h3>
+                      <h3 className="product-name" title={product.name}>{product.name}</h3>
                       <p className="product-size">{product.size} {product.unit}</p>
                       <div className="product-price-row">
                         <p className="product-price">${product.price.toFixed(2)} 
