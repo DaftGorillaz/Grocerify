@@ -445,7 +445,7 @@ const ProductDetailsPage = () => {
       <div className="product-container">
         {productData.map((product, index) => (
           <div key={index} className="product-section">
-            <h2 className="product-title">{product.productName}</h2>
+            <h2 className="product-title">{product.productName.charAt(0).toUpperCase() + product.productName.slice(1)}</h2>
             
             <div className="products-scroll-container">
               <div className="products-row">
