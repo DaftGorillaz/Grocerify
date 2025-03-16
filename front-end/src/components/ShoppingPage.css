@@ -29,6 +29,28 @@
   display: flex;
   align-items: center;
   margin-bottom: 30px;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.delete-all-button {
+  background-color: #FF6961;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 15px;
+  color: white;
+  font-family: 'ADLaM Display', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-all-button:hover {
+  background-color: #ff5147;
 }
 
 .back-arrow {

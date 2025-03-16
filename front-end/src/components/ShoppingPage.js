@@ -27,6 +27,7 @@ const ShoppingPage = () => {
   const [showAddRecipeModal, setShowAddRecipeModal] = useState(false);
   const [newRecipeName, setNewRecipeName] = useState('');
   const [newRecipeIngredients, setNewRecipeIngredients] = useState('');
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('shoppingItems', JSON.stringify(items));
@@ -109,16 +110,33 @@ const ShoppingPage = () => {
     });
   };
 
+  const handleDeleteAll = () => {
+    setShowDeleteConfirmModal(true);
+  };
+
+  const confirmDeleteAll = () => {
+    setItems([]);
+    setRecipes([]);
+    setShowDeleteConfirmModal(false);
+  };
+
   return (
     <div className="shopping-page">
       <div className="shopping-header">
-        <img 
-          src={backArrow} 
-          alt="Back" 
-          className="back-arrow" 
-          onClick={handleBackClick}
-        />
-        <h1 className="shopping-title">Shopping List</h1>
+        <div className="header-left">
+          <img 
+            src={backArrow} 
+            alt="Back" 
+            className="back-arrow" 
+            onClick={handleBackClick}
+          />
+          <h1 className="shopping-title">Shopping List</h1>
+        </div>
+        {(items.length > 0 || recipes.length > 0) && (
+          <button className="delete-all-button" onClick={handleDeleteAll}>
+            Remove All
+          </button>
+        )}
       </div>
 
       <div className="shopping-list">
@@ -228,6 +246,26 @@ const ShoppingPage = () => {
             <div className="modal-buttons">
               <button onClick={() => setShowAddRecipeModal(false)}>Cancel</button>
               <button onClick={handleAddRecipe}>Add</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDeleteConfirmModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Remove All Items?</h2>
+            <p style={{ marginBottom: '20px', color: '#7C7C7C' }}>
+              This will remove all items and recipes from your shopping list. This action cannot be undone.
+            </p>
+            <div className="modal-buttons">
+              <button onClick={() => setShowDeleteConfirmModal(false)}>Cancel</button>
+              <button 
+                onClick={confirmDeleteAll}
+                style={{ backgroundColor: '#FF6961' }}
+              >
+                Remove All
+              </button>
             </div>
           </div>
         </div>
