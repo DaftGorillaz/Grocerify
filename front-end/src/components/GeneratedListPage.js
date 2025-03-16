@@ -34,12 +34,24 @@ const GeneratedListPage = () => {
   const [modalMessage, setModalMessage] = useState('');
   const [modalType, setModalType] = useState('success'); // 'success' or 'error'
 
+  // Add state for store subtotals
+  const [storeSubtotals, setStoreSubtotals] = useState({});
+
   useEffect(() => {
     // Calculate the total price of all items
     const sum = shoppingList.reduce((total, item) => {
       return total + (item.price || 0);
     }, 0);
     setTotalPrice(sum);
+    
+    // Calculate subtotals for each store
+    const subtotals = {};
+    shoppingList.forEach(item => {
+      if (item.store) {
+        subtotals[item.store] = (subtotals[item.store] || 0) + (item.price || 0);
+      }
+    });
+    setStoreSubtotals(subtotals);
   }, [shoppingList]);
 
   // Store logo mapping
@@ -154,6 +166,9 @@ const GeneratedListPage = () => {
                 />
                 <span className="store-name">{capitalize(preferredStore)}</span>
               </div>
+              <div className="store-subtotal">
+                <span className="subtotal-label">Subtotal:</span>&nbsp;&nbsp;${storeSubtotals[preferredStore]?.toFixed(2) || '0.00'}
+              </div>
             </div>
             <div className="items-list">
               {shoppingList.map((item, index) => (
@@ -227,6 +242,9 @@ const GeneratedListPage = () => {
                     className="store-logo-img" 
                   />
                   <span className="store-name">{capitalize(store)}</span>
+                </div>
+                <div className="store-subtotal">
+                  <span className="subtotal-label">Subtotal:</span> ${storeSubtotals[store]?.toFixed(2) || '0.00'}
                 </div>
               </div>
               <div className="items-list">
