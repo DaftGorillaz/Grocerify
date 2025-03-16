@@ -28,7 +28,11 @@ const GeneratedListPage = () => {
 
   // Calculate total price
   const [totalPrice, setTotalPrice] = useState(0);
-  const [storeSubtotals, setStoreSubtotals] = useState({});
+  
+  // Modal states
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalType, setModalType] = useState('success'); // 'success' or 'error'
 
   useEffect(() => {
     // Calculate the total price of all items
@@ -36,19 +40,6 @@ const GeneratedListPage = () => {
       return total + (item.price || 0);
     }, 0);
     setTotalPrice(sum);
-
-    // Calculate subtotals per store
-    const subtotals = {};
-    shoppingList.forEach(item => {
-      if (item.store) {
-        const storeName = item.store;
-        if (!subtotals[storeName]) {
-          subtotals[storeName] = 0;
-        }
-        subtotals[storeName] += (item.price || 0);
-      }
-    });
-    setStoreSubtotals(subtotals);
   }, [shoppingList]);
 
   // Store logo mapping
@@ -99,7 +90,9 @@ const GeneratedListPage = () => {
     );
 
     if (isDuplicate) {
-      alert('This shopping list is already in your favorites!');
+      setModalMessage('This shopping list is already in your favorites!');
+      setModalType('error');
+      setShowModal(true);
       return;
     }
 
@@ -116,7 +109,9 @@ const GeneratedListPage = () => {
     const updatedHistory = [historyEntry, ...existingHistory];
     localStorage.setItem('shoppingHistory', JSON.stringify(updatedHistory));
 
-    alert(`Shopping list "${listName}" added to favorites and history!`);
+    setModalMessage(`Shopping list "${listName}" added to favorites and history!`);
+    setModalType('success');
+    setShowModal(true);
   };
 
   // Update to use index instead of itemId
@@ -153,17 +148,12 @@ const GeneratedListPage = () => {
             <div className="store-header">
               <div className={`store-logo-container ${preferredStore.toLowerCase()}-container`}>
                 <img 
-                  src={storeLogo[preferredStore.toLowerCase()]} 
+                  src={storeLogo[preferredStore]} 
                   alt={preferredStore} 
                   className="store-logo-img" 
                 />
                 <span className="store-name">{capitalize(preferredStore)}</span>
               </div>
-              {storeSubtotals[preferredStore] && (
-                <div className="store-subtotal">
-                  <span className="subtotal-label">Subtotal:</span>&nbsp;&nbsp;${storeSubtotals[preferredStore].toFixed(2)}
-                </div>
-              )}
             </div>
             <div className="items-list">
               {shoppingList.map((item, index) => (
@@ -232,17 +222,12 @@ const GeneratedListPage = () => {
               <div className="store-header">
                 <div className={`store-logo-container ${store.toLowerCase()}-container`}>
                   <img 
-                    src={storeLogo[store.toLowerCase()]} 
+                    src={storeLogo[store]} 
                     alt={store} 
                     className="store-logo-img" 
                   />
                   <span className="store-name">{capitalize(store)}</span>
                 </div>
-                {storeSubtotals[store] && (
-                  <div className="store-subtotal">
-                    <span className="subtotal-label">Subtotal:</span>&nbsp;&nbsp;${storeSubtotals[store].toFixed(2)}
-                  </div>
-                )}
               </div>
               <div className="items-list">
                 {itemsByStore[store].map((item, itemIndex) => {
@@ -292,6 +277,18 @@ const GeneratedListPage = () => {
           Save to History
         </button>
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>{modalType === 'success' ? 'Success!' : 'Note'}</h2>
+            <p>{modalMessage}</p>
+            <div className="modal-buttons">
+              <button onClick={() => setShowModal(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <BottomNavigation activeTab="shopping" />
       <div className="home-indicator"></div>

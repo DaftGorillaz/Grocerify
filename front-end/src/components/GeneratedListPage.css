@@ -341,4 +341,73 @@
 
 .subtotal-label {
   color: #181725;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #F2F3F2;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 30px;
+  padding: 20px;
+  animation: slideUp 0.3s ease-out;
+  margin: 20px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal h2 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #181725;
+  margin: 0 0 15px 0;
+}
+
+.modal p {
+  font-size: 16px;
+  color: #7C7C7C;
+  margin: 0 0 20px 0;
+  line-height: 1.4;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-buttons button {
+  background-color: #53B175;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 12px 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-buttons button:hover {
+  background-color: #489e68;
 } 
