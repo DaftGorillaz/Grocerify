@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './GeneratedListPage.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import backArrow from '../assets/images/back-arrow.svg';
@@ -25,6 +25,17 @@ const GeneratedListPage = () => {
   const [checkedItems, setCheckedItems] = useState(
     Array(shoppingList.length).fill(false)
   );
+
+  // Calculate total price
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    // Calculate the total price of all items
+    const sum = shoppingList.reduce((total, item) => {
+      return total + (item.price || 0);
+    }, 0);
+    setTotalPrice(sum);
+  }, [shoppingList]);
 
   // Store logo mapping
   const storeLogo = {
@@ -242,6 +253,11 @@ const GeneratedListPage = () => {
             </div>
           ))
         )}
+
+        <div className="total-price-container">
+          <div className="total-price-label">Total:</div>
+          <div className="total-price-value">${totalPrice.toFixed(2)}</div>
+        </div>
       </div>
 
       <div className="action-buttons">

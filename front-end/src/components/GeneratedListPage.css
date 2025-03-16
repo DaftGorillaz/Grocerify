@@ -299,4 +299,28 @@
   background-color: #000000;
   opacity: 0.1;
   border-radius: 100px;
+}
+
+.total-price-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F8F9FA;
+  border-radius: 15px;
+  padding: 15px 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 6px solid #53B175;
+}
+
+.total-price-label {
+  font-size: 17px;
+  font-weight: 500;
+  color: #181725;
+}
+
+.total-price-value {
+  font-size: 17px;
+  font-weight: 600;
+  color: #53B175;
 } 
