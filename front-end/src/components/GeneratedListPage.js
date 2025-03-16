@@ -7,6 +7,10 @@ import BottomNavigation from './BottomNavigation';
 import woolworthsLogo from '../assets/images/woolworths-logo.svg';
 import colesLogo from '../assets/images/coles-logo.svg';
 
+function capitalize(val) {
+  return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
+
 const GeneratedListPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,8 +28,8 @@ const GeneratedListPage = () => {
 
   // Store logo mapping
   const storeLogo = {
-    'Woolworths': woolworthsLogo,
-    'Coles': colesLogo
+    'woolworths': woolworthsLogo,
+    'coles': colesLogo
   };
 
   const handleGoBack = () => {
@@ -128,7 +132,7 @@ const GeneratedListPage = () => {
                   alt={preferredStore} 
                   className="store-logo-img" 
                 />
-                <span className="store-name">{preferredStore}</span>
+                <span className="store-name">{capitalize(preferredStore)}</span>
               </div>
             </div>
             <div className="items-list">
@@ -202,7 +206,7 @@ const GeneratedListPage = () => {
                     alt={store} 
                     className="store-logo-img" 
                   />
-                  <span className="store-name">{store}</span>
+                  <span className="store-name">{capitalize(store)}</span>
                 </div>
               </div>
               <div className="items-list">
