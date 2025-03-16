@@ -95,7 +95,7 @@ const ProductDetailsPage = () => {
             }));
             
             try {
-              const response = await fetch(`http://grocerify-production.up.railway.app/search?query=${encodeURIComponent(item.name)}`);
+              const response = await fetch(`http://127.0.0.1:5000/search?query=${encodeURIComponent(item.name)}`);
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
               }
@@ -300,12 +300,18 @@ const ProductDetailsPage = () => {
       return;
     }
     
+    // Prompt user for list name
+    const customListName = prompt('Enter a name for your custom list:', 'My Custom Shopping List');
+    
+    // If user cancels the prompt, use default name
+    const listName = customListName || 'My Custom Shopping List';
+    
     // Navigate to the generated list page with custom selections
     navigate('/generated-list', { 
       state: { 
         shoppingList: customList,
         maxStores: 'custom', // Special flag for custom selection
-        listName: 'My Custom Shopping List'
+        listName: listName
       } 
     });
   };
